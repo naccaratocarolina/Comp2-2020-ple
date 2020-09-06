@@ -78,17 +78,17 @@ public class Conta {
     }
 
     public void sacar(int senhaDigitada, float valor) {
-        //excecao de saldo insuficiente
-        if(this.saldo - valor < -LIMITE) {
-            return;
+        if(this.saldo - valor > -LIMITE) {
+            if (verificaSenha(senhaDigitada)) {
+                this.saldo -= valor;
+                String novaOperacao = String.format("Saque: R$%.2f", valor);
+                this.operacoes[this.quantOperacoes++] = novaOperacao;
+            }
         }
+    }
 
-        //se a senha digitada for correta, realiza a operacao de sacar
-        if(verificaSenha(senhaDigitada)) {
-            this.saldo -= valor;
-            String novaOperacao = String.format("Saque: R$%.2f", valor);
-            this.operacoes[this.quantOperacoes++] = novaOperacao;
-        }
+    public void receberDeposito(float valor) {
+        depositar(valor, this.numero);
     }
 
     public void depositar(float valor, long numeroContaDestino) {
@@ -98,14 +98,15 @@ public class Conta {
     }
 
     public void transferir(int senhaDigitada, Conta contaDestino, float valor) {
-        //se a senha digitada for correta, realiza a operacao de transferencia entre contas
-        if(verificaSenha(senhaDigitada)) {
-            this.saldo -= valor;
-            contaDestino.depositar(valor, contaDestino.getNumero());
-            String novaOperacao = String.format(
-                    "Transferencia efetuada para a conta %d de %s: R$%.2f",
-                    contaDestino.getNumero(), this.titular.getNome(), valor);
-            this.operacoes[this.quantOperacoes++] = novaOperacao;
+        if(this.saldo - valor > -LIMITE) {
+            if (verificaSenha(senhaDigitada)) {
+                this.saldo -= valor;
+                contaDestino.depositar(valor, contaDestino.getNumero());
+                String novaOperacao = String.format(
+                        "Transferencia efetuada para a conta %d de %s: R$%.2f",
+                        contaDestino.getNumero(), this.titular.getNome(), valor);
+                this.operacoes[this.quantOperacoes++] = novaOperacao;
+            }
         }
     }
 }

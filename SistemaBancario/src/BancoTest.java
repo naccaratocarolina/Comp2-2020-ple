@@ -58,6 +58,52 @@ public class BancoTest {
 
     @Test
     public void testarCadastroAgencia() {
+        assertEquals(2, banco.getQuantAgencias());
+        Agencia novaAgencia = banco.cadastrarAgencia(654, marcelo);
+        assertNotNull(novaAgencia);
+        assertEquals(3, banco.getQuantAgencias());
+        assertEquals(marcelo, novaAgencia.getGerenteGeral());
+        assertEquals(gabriella, agencia1.getGerenteGeral());
+    }
 
+    @Test
+    public void testarCadastroConta() {
+        assertEquals(0, contaAna.getSaldo(), DELTA);
+        assertEquals(agencia1.getGerenteGeral(), contaAna.getGerente());
+        assertEquals(ana, contaAna.getTitular());
+    }
+
+    @Test
+    public void testarOperacoesBancarias() {
+        assertTrue(contaAna.verificaSenha(senhaCartaoAna));
+        assertFalse(contaAna.verificaSenha(senhaCartaoEduardo));
+
+        contaAna.receberDeposito(500);
+        assertEquals(500, contaAna.getSaldo(), DELTA);
+
+        contaAna.transferir(senhaCartaoAna, contaEduardo, 250);
+        assertEquals(250, contaAna.getSaldo(), DELTA);
+        assertEquals(250, contaEduardo.getSaldo(), DELTA);
+
+        contaAna.sacar(senhaCartaoAna, 50);
+        assertEquals(200, contaAna.getSaldo(), DELTA);
+    }
+
+    @Test
+    public void testarSaqueComSenhaIncorreta() {
+        contaAna.sacar(senhaCartaoEduardo, 20);
+        assertEquals(0, contaAna.getSaldo(), DELTA);
+
+        contaAna.sacar(senhaCartaoAna, 100);
+        assertEquals(0, contaAna.getSaldo(), DELTA);
+
+        contaAna.sacar(senhaCartaoAna, 10);
+        assertEquals(-10, contaAna.getSaldo(), DELTA);
+    }
+
+    @Test
+    public void testarTransferenciaSemFundos() {
+        contaAna.transferir(senhaCartaoAna, contaEduardo, 500);
+        assertEquals(0, contaAna.getSaldo(), DELTA);
     }
 }
