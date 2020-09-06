@@ -110,9 +110,15 @@ public class Conta {
             //se for um deposito entre contas
             else {
                 contaDestino.saldo += valor;
+                //registra operacao na conta de quem esta realizando a mesma
                 String novaOperacao = String.format(this.titular.getNome() + " depositou R$%.2f na conta de %s de numero %d",
                         valor, contaDestino.getTitular().getNome(), contaDestino.getNumero());
                 this.operacoes[this.quantOperacoes++] = novaOperacao;
+
+                //registra operacao na conta destino do deposito
+                String novaOperacaoContaDestino = String.format(contaDestino.titular.getNome() + " recebeu um deposito de %s de R$%.2f",
+                        this.titular.getNome(), valor);
+                contaDestino.operacoes[contaDestino.quantOperacoes++] = novaOperacaoContaDestino;
             }
         }
     }
