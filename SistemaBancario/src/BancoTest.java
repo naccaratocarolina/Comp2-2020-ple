@@ -57,6 +57,18 @@ public class BancoTest {
     }
 
     @Test
+    public void testarCodigoAgencia() {
+        Agencia novaAgencia = new Agencia();
+        assertNotNull(novaAgencia);
+        novaAgencia.setCodigo(1);
+        assertEquals(0, novaAgencia.getCodigo());
+        novaAgencia.setCodigo(111111);
+        assertEquals(0, novaAgencia.getCodigo());
+        novaAgencia.setCodigo(333);
+        assertEquals(333, novaAgencia.getCodigo());
+    }
+
+    @Test
     public void testarCadastroAgencia() {
         assertEquals(2, banco.getQuantAgencias());
         Agencia novaAgencia = banco.cadastrarAgencia(654, marcelo);
@@ -67,6 +79,26 @@ public class BancoTest {
     }
 
     @Test
+    /**
+     * Regra da geracao de um numero de conta
+     * 3 primeiros digitos - Codigo da agencia
+     * quarto digito - Identificador do titular + 1
+     * quinto digito - Identificador do gerente + 1
+     */
+    public void testarGeracaoNumeroConta() {
+        Titular barbara = banco.cadastrarTitular("Barbara", 11111111, 1234);
+        Titular suzana = banco.cadastrarTitular("Suzana", 222222222, 6549);
+        Agencia agencia3 = banco.cadastrarAgencia(999, marcelo);
+        assertEquals(4, banco.getQuantTitulares());
+
+        //Numero gerado esperado: 123 (codigo da agencia1) + 3 (id do titular, barbara) + 1 (id da gerente da agencia1)
+        assertEquals(12331, banco.gerarNumeroConta(agencia1, barbara));
+
+        //Numero gerado esperado: 999 (codigo da agencia3) + 4 (id do titular, suzana) + 2 (id da gerente da agencia3)
+        assertEquals(99942, banco.gerarNumeroConta(agencia3, suzana));
+    }
+
+    @Test
     public void testarCadastroConta() {
         assertEquals(0, contaAna.getSaldo(), DELTA);
         assertEquals(agencia1.getGerenteGeral(), contaAna.getGerente());
@@ -74,19 +106,34 @@ public class BancoTest {
     }
 
     @Test
-    public void testarOperacoesBancarias() {
-        assertTrue(contaAna.verificaSenha(senhaCartaoAna));
-        assertFalse(contaAna.verificaSenha(senhaCartaoEduardo));
+    public void testarAlterarSenhaIntranet() {
+        //primeiro acesso a intranet do banco, senha = cpf
+        assertEquals(String.valueOf(cpfAna), contaAna.getTitular().getSenhaIntranet());
+        contaAna.alteraSenhaIntranet(String.valueOf(cpfAna), "novasenha");
+        assertEquals("novasenha", contaAna.getTitular().getSenhaIntranet());
+        contaAna.depositar(senhaCartaoAna, contaAna, 500);
+        contaAna.sacar(senhaCartaoAna, 120);
+        assertNotNull(contaAna.historicoOperacoesBancarias("novasenha"));
+    }
 
-        contaAna.receberDeposito(500);
+    @Test
+    public void testarOperacoesBancarias() {
+        assertTrue(contaAna.verificaSenhaCartao(senhaCartaoAna));
+        assertFalse(contaAna.verificaSenhaCartao(senhaCartaoEduardo));
+
+        contaAna.depositar(senhaCartaoAna, contaAna, 500);
         assertEquals(500, contaAna.getSaldo(), DELTA);
 
-        contaAna.transferir(senhaCartaoAna, contaEduardo, 250);
-        assertEquals(250, contaAna.getSaldo(), DELTA);
-        assertEquals(250, contaEduardo.getSaldo(), DELTA);
+        contaAna.depositar(senhaCartaoAna, contaEduardo, 120);
+        assertEquals(500, contaAna.getSaldo(), DELTA);
+        assertEquals(120, contaEduardo.getSaldo(), DELTA);
 
-        contaAna.sacar(senhaCartaoAna, 50);
-        assertEquals(200, contaAna.getSaldo(), DELTA);
+        contaAna.sacar(senhaCartaoAna, 60);
+        assertEquals(440, contaAna.getSaldo(), DELTA);
+
+        contaAna.transferir(senhaCartaoAna, contaEduardo, 145);
+        assertEquals(295, contaAna.getSaldo(), DELTA);
+        assertEquals(265, contaEduardo.getSaldo(), DELTA);
     }
 
     @Test

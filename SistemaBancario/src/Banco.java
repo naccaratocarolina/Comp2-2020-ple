@@ -70,14 +70,14 @@ public class Banco {
         //Pega o identificador do titular
         for(int i=0; i<this.titulares.length; i++) {
             if(this.titulares[i] == titular) {
-                idTitular = i;
+                idTitular = i+1;
             }
         }
 
         //Pega o identificador do gerente
         for(int j=0; j<this.gerentes.length; j++) {
             if(this.gerentes[j] == agencia.getGerenteGeral()) {
-                idGerente = j;
+                idGerente = j+1;
             }
         }
 
@@ -108,5 +108,9 @@ public class Banco {
 
     public int getQuantGerentes() {
         return quantGerentes;
+    }
+
+    public int getQuantTitulares() {
+        return quantTitulares;
     }
 }

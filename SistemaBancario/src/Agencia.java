@@ -11,7 +11,8 @@ public class Agencia {
 
     public void setCodigo(int codigo) {
         //obriga que o numero digitado tenha somente 3 digitos
-        if(codigo<100 || codigo>1000) {
+        int numDigitos = String.valueOf(codigo).length();
+        if(numDigitos!=3) {
             return;
         }
         this.codigo = codigo;
