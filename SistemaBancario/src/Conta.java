@@ -2,7 +2,7 @@ import static java.lang.String.format;
 
 public class Conta {
     //o limite da conta
-    public final static int LIMITE = 100;
+    public final static int LIMITE = 10;
 
     //numero da conta bancaria
     private final long numero;
@@ -88,7 +88,7 @@ public class Conta {
     }
 
     public void sacar(int senhaDigitada, float valor) {
-        if(this.saldo - valor > -LIMITE) {
+        if(this.saldo - valor >= -LIMITE) {
             if (verificaSenhaCartao(senhaDigitada)) {
                 this.saldo -= valor;
                 String novaOperacao = String.format("%s realizou um saque de R$%.2f", this.titular.getNome(), valor);
@@ -124,7 +124,7 @@ public class Conta {
     }
 
     public void transferir(int senhaDigitada, Conta contaDestino, float valor) {
-        if(this.saldo - valor > -LIMITE) {
+        if(this.saldo - valor >= -LIMITE) {
             if (verificaSenhaCartao(senhaDigitada)) {
                 this.saldo -= valor;
                 this.depositar(senhaDigitada, contaDestino, valor);
@@ -142,8 +142,22 @@ public class Conta {
         }
     }
 
+    public void pagamento(String senhaDigitada, float valor) {
+        if(this.saldo - valor >= -LIMITE) {
+            if(verificaSenhaIntranet(senhaDigitada)) {
+                this.saldo -= valor;
+                String novaOperacao = String.format("Pagamento realizado por %s no valor de R$%.2f",
+                        this.titular.getNome(), valor);
+                this.operacoes[this.quantOperacoes++] = novaOperacao;
+            }
+        }
+    }
+
     public String historicoOperacoesBancarias(String senhaDigitada) {
         String historico = "";
+        if(this.quantOperacoes == 0) {
+            return historico;
+        }
 
         String novaOperacao = String.format("Saldo final de R$%.2f da conta de numero %d", this.getSaldo(), this.getNumero());
         this.operacoes[this.quantOperacoes++] = novaOperacao;

@@ -26,6 +26,7 @@ public class Main {
         contaJoana.depositar(senhaCartaoJoana, contaGabriel, 420);
         contaJoana.transferir(senhaCartaoJoana, contaGabriel, 80);
         contaGabriel.sacar(senhaCartaoGabriel, 311);
+        contaJoana.pagamento(String.valueOf(cpfJoana), 127);
 
         System.out.println(contaJoana.historicoOperacoesBancarias("301553982"));
         System.out.println(contaGabriel.historicoOperacoesBancarias("664882301"));

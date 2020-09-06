@@ -134,6 +134,9 @@ public class BancoTest {
         contaAna.transferir(senhaCartaoAna, contaEduardo, 145);
         assertEquals(295, contaAna.getSaldo(), DELTA);
         assertEquals(265, contaEduardo.getSaldo(), DELTA);
+
+        contaAna.pagamento(String.valueOf(cpfAna), 17);
+        assertEquals(278, contaAna.getSaldo(), DELTA);
     }
 
     @Test
@@ -152,5 +155,27 @@ public class BancoTest {
     public void testarTransferenciaSemFundos() {
         contaAna.transferir(senhaCartaoAna, contaEduardo, 500);
         assertEquals(0, contaAna.getSaldo(), DELTA);
+    }
+
+    @Test
+    public void testarPagamentoComSenhaIncorreta() {
+        contaAna.pagamento("senhaincorreta", 10);
+        assertEquals(0, contaAna.getSaldo(), DELTA);
+    }
+
+    @Test
+    public void testarPagamentoSemFuncos() {
+        assertEquals(0, contaAna.getSaldo(), DELTA);
+        contaAna.pagamento(String.valueOf(cpfAna), 100);
+        assertEquals(0, contaAna.getSaldo(), DELTA);
+        contaAna.pagamento(String.valueOf(cpfAna), 20);
+        assertEquals(0, contaAna.getSaldo(), DELTA);
+        contaAna.pagamento(String.valueOf(cpfAna), 10);
+        assertEquals(-10, contaAna.getSaldo(), DELTA);
+    }
+
+    @Test
+    public void testarHistoricoOperacoesVazio() {
+        assertEquals("", contaAna.historicoOperacoesBancarias(String.valueOf(cpfAna)));
     }
 }
