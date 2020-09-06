@@ -1,25 +1,30 @@
 public class Agencia {
-    //nome da agencia
-    private String nome;
-
-    //numero da agencia
-    private final long numero;
+    //codigo da agencia
+    private int codigo;
 
     //gerente geral dessa agencia
     private Gerente gerenteGeral;
 
-    /**
-     * Setter de gerente geral da Agencia
-     * @param gerente
-     */
-    public void setGerenteGeral(Gerente gerente) {
-        this.gerenteGeral = gerente;
+    public Agencia(int codigo) {
+        this.codigo = codigo;
     }
 
-    /**
-     * Getter de gerente geral da Agencia
-     * @return gerenteGeral
-     */
+    public int getCodigo() {
+        return codigo;
+    }
+
+    public void setCodigo(int codigo) {
+        //obriga que o numero digitado tenha somente 3 digitos
+        if(codigo<100 || codigo>1000) {
+            return;
+        }
+        this.codigo = codigo;
+    }
+
+    public void setGerenteGeral(Gerente gerenteGeral) {
+        this.gerenteGeral = gerenteGeral;
+    }
+
     public Gerente getGerenteGeral() {
         return this.gerenteGeral;
     }
