@@ -41,7 +41,8 @@ public class Banco {
     }
 
     public Agencia cadastrarAgencia(int codigo, Gerente gerente) {
-        Agencia novaAgencia = new Agencia(codigo);
+        Agencia novaAgencia = new Agencia();
+        novaAgencia.setCodigo(codigo);
         novaAgencia.setGerenteGeral(gerente);
         this.agencias[this.quantAgencias++] = novaAgencia;
         return novaAgencia;

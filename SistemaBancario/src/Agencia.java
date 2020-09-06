@@ -5,10 +5,6 @@ public class Agencia {
     //gerente geral dessa agencia
     private Gerente gerenteGeral;
 
-    public Agencia(int codigo) {
-        this.codigo = codigo;
-    }
-
     public int getCodigo() {
         return codigo;
     }
