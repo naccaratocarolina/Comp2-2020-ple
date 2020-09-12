@@ -96,22 +96,42 @@ public class Fracao {
 
     private boolean ehDizimaSimples()
     {
-
+        return true;
     }
 
     private int getPeriodo()
     {
+        return 1;
+    }
 
+    private int getDigito(int numero, int i)
+    {
+        String num = String.valueOf(numero);
+        return Character.digit(num.charAt(i),10);
+    }
+
+    private String getDecimal(String numero, int i) {
+        return String.valueOf(numero.charAt(i));
+    }
+
+    public void printa() {
+        System.out.println(this.getPeriodo());
+        System.out.println(this.getDigito(54321,0));
+    }
+
+    private double obtemParteDecimal(double dizima)
+    {
+        return dizima - Math.floor(dizima);
     }
 
     private int getNumDigitosPeriodo()
     {
-
+        return 1;
     }
 
-    private void transformaEmDizimaSimples()
+    private int transformaEmDizimaSimples()
     {
-
+        return 1;
     }
 
     /**
@@ -123,7 +143,7 @@ public class Fracao {
     public Fracao getFracaoGeratriz()
     {
         int numDigitosPeriodo = 1;
-        int numeradorGeratriz = (int) ((this.dizima*10*numDigitosPeriodo) - this.dizima);
+        int numeradorGeratriz = (this.numerador/this.denominador)*10*numDigitosPeriodo;
         int denominadorGeratriz = (10*numDigitosPeriodo) - 1;
         return new Fracao(numeradorGeratriz, denominadorGeratriz, this.positiva);
     }
