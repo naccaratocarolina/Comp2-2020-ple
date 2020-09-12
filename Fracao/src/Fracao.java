@@ -1,3 +1,7 @@
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class Fracao {
@@ -5,7 +9,6 @@ public class Fracao {
     private int numerador;
     public int denominador;
     public boolean positiva;
-    private double dizima;
     private int sinal;
 
     /**
@@ -21,7 +24,6 @@ public class Fracao {
         this.numerador = numerador;
         this.denominador = denominador;
         this.positiva = positiva;
-        this.dizima = (double) numerador/denominador;
     }
 
     /**
@@ -94,39 +96,86 @@ public class Fracao {
         return (double) this.numerador/this.denominador;
     }
 
-    private boolean ehDizimaSimples()
-    {
-        return true;
+    /**
+     * Funcao que trunca uma dizima infinita.
+     *
+     * @param numerador
+     * @param denominador
+     * @param precisao
+     * @return retorna a dizima truncada com a precisao dada
+     */
+    public double truncaDizima(int numerador, int denominador, int precisao) {
+        double n = (double) (numerador * (Math.pow(10, precisao)));
+        double divisaoTruncada = (double) Math.floor(n/denominador);
+        return (double) (divisaoTruncada/(Math.pow(10, precisao)));
     }
 
-    private int getPeriodo()
+    /**
+     * Funcao que retorna o periodo de uma dizima infinita.
+     *
+     * @return o periodo de uma dizima
+     */
+    public int getPeriodo()
     {
-        return 1;
+        String parteDecimal = obtemParteDecimal(truncaDizima(numerador, denominador, 16));
+        int periodo = (getDecimal(parteDecimal, 0));
+        for(int i=0; i<parteDecimal.length()-1; i++)
+        {
+            if(periodo != getDecimal(parteDecimal, i+1)) {
+                periodo = (int) ((periodo*10) + getDecimal(parteDecimal, i+1));
+            }
+            else break;
+        }
+        return periodo;
     }
 
-    private int getDigito(int numero, int i)
+    public int getPeriodo2()
+    {
+        String parteDecimal = obtemParteDecimal(truncaDizima(numerador, denominador, 16));
+        String periodo = null;
+        for(int i=0; i<parteDecimal.length()-1; i++)
+        {
+            if(i == 0) periodo = String.valueOf(parteDecimal.charAt(0));
+            else if(i == 1 && parteDecimal.charAt(0) != parteDecimal.charAt(1)) periodo = parteDecimal.substring(0,2);
+            else if(i == 2 && parteDecimal.substring(0,i) != parteDecimal.substring(i,i*2)) periodo = parteDecimal.substring(0,i+1);
+            else break;
+        }
+        return Integer.parseInt(periodo);
+    }
+
+    /**
+     * Funcao auxiliar que recebe um numero em forma de String e retorna o caractere na posicao i.
+     *
+     * @param numero
+     * @param i
+     * @return retorna o inteiro correspondente a posicao i da String dada
+     */
+    private int getDecimal(String numero, int i) {
+        return Integer.parseInt(String.valueOf(numero.charAt(i)));
+    }
+
+    /**
+     * Recebe um double e extrai as suas n casas decimais.
+     *
+     * @param numero
+     * @return retorna um inteiro correspondente as casas decimais do double dado
+     */
+    public String obtemParteDecimal(double numero)
     {
         String num = String.valueOf(numero);
-        return Character.digit(num.charAt(i),10);
+        return num.substring(2);
     }
 
-    private String getDecimal(String numero, int i) {
-        return String.valueOf(numero.charAt(i));
-    }
-
-    public void printa() {
-        System.out.println(this.getPeriodo());
-        System.out.println(this.getDigito(54321,0));
-    }
-
-    private double obtemParteDecimal(double dizima)
-    {
-        return dizima - Math.floor(dizima);
-    }
-
+    /**
+     * Funcao que conta a quantidade de digitos que do periodo da d
+     *
+     * @return quantidade de digitos do periodo de uma dizima
+     */
     private int getNumDigitosPeriodo()
     {
-        return 1;
+        int periodo = this.getPeriodo();
+        String numeroDeDigitos = String.valueOf(periodo);
+        return numeroDeDigitos.length();
     }
 
     private int transformaEmDizimaSimples()
