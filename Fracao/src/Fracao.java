@@ -1,12 +1,8 @@
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 public class Fracao {
 
-    private int numerador;
+    public int numerador;
     public int denominador;
     public boolean positiva;
     private int sinal;
@@ -111,50 +107,6 @@ public class Fracao {
     }
 
     /**
-     * Funcao que retorna o periodo de uma dizima infinita.
-     *
-     * @return o periodo de uma dizima
-     */
-    public int getPeriodo()
-    {
-        String parteDecimal = obtemParteDecimal(truncaDizima(numerador, denominador, 16));
-        int periodo = (getDecimal(parteDecimal, 0));
-        for(int i=0; i<parteDecimal.length()-1; i++)
-        {
-            if(periodo != getDecimal(parteDecimal, i+1)) {
-                periodo = (int) ((periodo*10) + getDecimal(parteDecimal, i+1));
-            }
-            else break;
-        }
-        return periodo;
-    }
-
-    public int getPeriodo2()
-    {
-        String parteDecimal = obtemParteDecimal(truncaDizima(numerador, denominador, 16));
-        String periodo = null;
-        for(int i=0; i<parteDecimal.length()-1; i++)
-        {
-            if(i == 0) periodo = String.valueOf(parteDecimal.charAt(0));
-            else if(i == 1 && parteDecimal.charAt(0) != parteDecimal.charAt(1)) periodo = parteDecimal.substring(0,2);
-            else if(i == 2 && parteDecimal.substring(0,i) != parteDecimal.substring(i,i*2)) periodo = parteDecimal.substring(0,i+1);
-            else break;
-        }
-        return Integer.parseInt(periodo);
-    }
-
-    /**
-     * Funcao auxiliar que recebe um numero em forma de String e retorna o caractere na posicao i.
-     *
-     * @param numero
-     * @param i
-     * @return retorna o inteiro correspondente a posicao i da String dada
-     */
-    private int getDecimal(String numero, int i) {
-        return Integer.parseInt(String.valueOf(numero.charAt(i)));
-    }
-
-    /**
      * Recebe um double e extrai as suas n casas decimais.
      *
      * @param numero
@@ -167,23 +119,6 @@ public class Fracao {
     }
 
     /**
-     * Funcao que conta a quantidade de digitos que do periodo da d
-     *
-     * @return quantidade de digitos do periodo de uma dizima
-     */
-    private int getNumDigitosPeriodo()
-    {
-        int periodo = this.getPeriodo();
-        String numeroDeDigitos = String.valueOf(periodo);
-        return numeroDeDigitos.length();
-    }
-
-    private int transformaEmDizimaSimples()
-    {
-        return 1;
-    }
-
-    /**
      * Retorna uma fração que é equivalente a esta fração (this),
      * e que é irredutível (numerador e denominador primos entre si)
      *
@@ -191,10 +126,22 @@ public class Fracao {
      */
     public Fracao getFracaoGeratriz()
     {
-        int numDigitosPeriodo = 1;
-        int numeradorGeratriz = (this.numerador/this.denominador)*10*numDigitosPeriodo;
-        int denominadorGeratriz = (10*numDigitosPeriodo) - 1;
-        return new Fracao(numeradorGeratriz, denominadorGeratriz, this.positiva);
+        int mdc = this.mdc(this.numerador, this.denominador);
+        if(mdc == 1) return this;
+        return new Fracao(this.numerador/mdc, this.denominador/mdc, positiva);
+    }
+
+    /**
+     * Calcula o MDC entre dois numeros de forma recursiva usando Euclides.
+     *
+     * @param a um numero inteiro qualquer
+     * @param b um numero inteiro qualquer
+     * @return o maior divisor comum entre os dois numeros
+     */
+    public int mdc(int a, int b)
+    {
+        if (a % b == 0) return b;
+        return mdc(b, a % b);
     }
 
     @Override
