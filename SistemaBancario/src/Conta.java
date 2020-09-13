@@ -1,6 +1,7 @@
 import static java.lang.String.format;
 
-public class Conta {
+public class Conta
+{
     //o limite da conta
     public final static int LIMITE = 10;
 
@@ -24,7 +25,8 @@ public class Conta {
     private Gerente gerente;
 
     //Construtor de Conta
-    public Conta(long numero, Agencia agencia, Titular titular) {
+    public Conta(long numero, Agencia agencia, Titular titular)
+    {
         //inicializando atts obrigatorios
         this.numero = numero;
         this.agencia = agencia;
@@ -37,57 +39,70 @@ public class Conta {
         this.gerente = agencia.getGerenteGeral();
     }
 
-    public long getNumero() {
+    public long getNumero()
+    {
         return numero;
     }
 
-    public float getSaldo() {
+    public float getSaldo()
+    {
         return saldo;
     }
 
-    public String[] getOperacoes() {
+    public String[] getOperacoes()
+    {
         return operacoes;
     }
 
-    public Agencia getAgencia() {
+    public Agencia getAgencia()
+    {
         return agencia;
     }
 
-    public void setAgencia(Agencia agencia) {
+    public void setAgencia(Agencia agencia)
+    {
         this.agencia = agencia;
     }
 
-    public Titular getTitular() {
+    public Titular getTitular()
+    {
         return titular;
     }
 
-    public void setTitular(Titular titular) {
+    public void setTitular(Titular titular)
+    {
         this.titular = titular;
     }
 
-    public Gerente getGerente() {
+    public Gerente getGerente()
+    {
         return gerente;
     }
 
-    public void setGerente(Gerente gerente) {
+    public void setGerente(Gerente gerente)
+    {
         this.gerente = gerente;
     }
 
-    public boolean verificaSenhaCartao(int senhaDigitada) {
+    public boolean verificaSenhaCartao(int senhaDigitada)
+    {
         return this.titular.getSenhaCartao() == senhaDigitada;
     }
 
-    public boolean verificaSenhaIntranet(String senhaDigitada) {
+    public boolean verificaSenhaIntranet(String senhaDigitada)
+    {
         return this.titular.getSenhaIntranet().equals(senhaDigitada);
     }
 
-    public void alteraSenhaIntranet(String senhaDigitada, String novaSenha) {
+    public void alteraSenhaIntranet(String senhaDigitada, String novaSenha)
+    {
         if(verificaSenhaIntranet(senhaDigitada)) {
             this.titular.setSenhaIntranet(novaSenha);
         }
     }
 
-    public void sacar(int senhaDigitada, float valor) {
+    public void sacar(int senhaDigitada, float valor)
+    {
         if(this.saldo - valor >= -LIMITE) {
             if (verificaSenhaCartao(senhaDigitada)) {
                 this.saldo -= valor;
@@ -97,7 +112,8 @@ public class Conta {
         }
     }
 
-    public void depositar(int senhaDigitada, Conta contaDestino, float valor) {
+    public void depositar(int senhaDigitada, Conta contaDestino, float valor)
+    {
         if(verificaSenhaCartao(senhaDigitada)) {
             //se o deposito for para si mesmo
             if(this == contaDestino) {
@@ -123,7 +139,8 @@ public class Conta {
         }
     }
 
-    public void transferir(int senhaDigitada, Conta contaDestino, float valor) {
+    public void transferir(int senhaDigitada, Conta contaDestino, float valor)
+    {
         if(this.saldo - valor >= -LIMITE) {
             if (verificaSenhaCartao(senhaDigitada)) {
                 this.saldo -= valor;
@@ -142,7 +159,8 @@ public class Conta {
         }
     }
 
-    public void pagamento(String senhaDigitada, float valor) {
+    public void pagamento(String senhaDigitada, float valor)
+    {
         if(this.saldo - valor >= -LIMITE) {
             if(verificaSenhaIntranet(senhaDigitada)) {
                 this.saldo -= valor;
@@ -153,7 +171,8 @@ public class Conta {
         }
     }
 
-    public String historicoOperacoesBancarias(String senhaDigitada) {
+    public String historicoOperacoesBancarias(String senhaDigitada)
+    {
         String historico = "";
         if(this.quantOperacoes == 0) {
             return historico;

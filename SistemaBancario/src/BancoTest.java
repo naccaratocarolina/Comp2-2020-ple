@@ -4,7 +4,8 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-public class BancoTest {
+public class BancoTest
+{
     private static final int DELTA = 0;
 
     private Banco banco;
@@ -29,7 +30,8 @@ public class BancoTest {
     private Gerente marcelo;
 
     @Before
-    public void setUp() {
+    public void setUp()
+    {
         //criar o banco
         banco = new Banco("Meu Banco");
 
@@ -57,7 +59,8 @@ public class BancoTest {
     }
 
     @Test
-    public void testarCodigoAgencia() {
+    public void testarCodigoAgencia()
+    {
         Agencia novaAgencia = new Agencia();
         assertNotNull(novaAgencia);
         novaAgencia.setCodigo(1);
@@ -69,7 +72,8 @@ public class BancoTest {
     }
 
     @Test
-    public void testarCadastroAgencia() {
+    public void testarCadastroAgencia()
+    {
         assertEquals(2, banco.getQuantAgencias());
         Agencia novaAgencia = banco.cadastrarAgencia(654, marcelo);
         assertNotNull(novaAgencia);
@@ -85,7 +89,8 @@ public class BancoTest {
      * quarto digito - Identificador do titular + 1
      * quinto digito - Identificador do gerente + 1
      */
-    public void testarGeracaoNumeroConta() {
+    public void testarGeracaoNumeroConta()
+    {
         Titular barbara = banco.cadastrarTitular("Barbara", 11111111, 1234);
         Titular suzana = banco.cadastrarTitular("Suzana", 222222222, 6549);
         Agencia agencia3 = banco.cadastrarAgencia(999, marcelo);
@@ -99,14 +104,16 @@ public class BancoTest {
     }
 
     @Test
-    public void testarCadastroConta() {
+    public void testarCadastroConta()
+    {
         assertEquals(0, contaAna.getSaldo(), DELTA);
         assertEquals(agencia1.getGerenteGeral(), contaAna.getGerente());
         assertEquals(ana, contaAna.getTitular());
     }
 
     @Test
-    public void testarAlterarSenhaIntranet() {
+    public void testarAlterarSenhaIntranet()
+    {
         //primeiro acesso a intranet do banco, senha = cpf
         assertEquals(String.valueOf(cpfAna), contaAna.getTitular().getSenhaIntranet());
         contaAna.alteraSenhaIntranet(String.valueOf(cpfAna), "novasenha");
@@ -117,7 +124,8 @@ public class BancoTest {
     }
 
     @Test
-    public void testarOperacoesBancarias() {
+    public void testarOperacoesBancarias()
+    {
         assertTrue(contaAna.verificaSenhaCartao(senhaCartaoAna));
         assertFalse(contaAna.verificaSenhaCartao(senhaCartaoEduardo));
 
@@ -140,7 +148,8 @@ public class BancoTest {
     }
 
     @Test
-    public void testarSaqueComSenhaIncorreta() {
+    public void testarSaqueComSenhaIncorreta()
+    {
         contaAna.sacar(senhaCartaoEduardo, 20);
         assertEquals(0, contaAna.getSaldo(), DELTA);
 
@@ -152,19 +161,22 @@ public class BancoTest {
     }
 
     @Test
-    public void testarTransferenciaSemFundos() {
+    public void testarTransferenciaSemFundos()
+    {
         contaAna.transferir(senhaCartaoAna, contaEduardo, 500);
         assertEquals(0, contaAna.getSaldo(), DELTA);
     }
 
     @Test
-    public void testarPagamentoComSenhaIncorreta() {
+    public void testarPagamentoComSenhaIncorreta()
+    {
         contaAna.pagamento("senhaincorreta", 10);
         assertEquals(0, contaAna.getSaldo(), DELTA);
     }
 
     @Test
-    public void testarPagamentoSemFuncos() {
+    public void testarPagamentoSemFuncos()
+    {
         assertEquals(0, contaAna.getSaldo(), DELTA);
         contaAna.pagamento(String.valueOf(cpfAna), 100);
         assertEquals(0, contaAna.getSaldo(), DELTA);
@@ -175,7 +187,8 @@ public class BancoTest {
     }
 
     @Test
-    public void testarHistoricoOperacoesVazio() {
+    public void testarHistoricoOperacoesVazio()
+    {
         assertEquals("", contaAna.historicoOperacoesBancarias(String.valueOf(cpfAna)));
     }
 }
