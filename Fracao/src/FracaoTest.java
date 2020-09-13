@@ -2,7 +2,8 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-public class FracaoTest {
+public class FracaoTest
+{
 
     private static final double DOUBLE_DELTA = 0.00000001;
 
@@ -53,6 +54,8 @@ public class FracaoTest {
 
         assertEquals(x, x);
         assertEquals(y, w);
+        assertEquals(x, w);
+        assertEquals(x, y);
         assertEquals("Frações equivalentes precisam ser consideradas iguais", x, y);
         assertNotEquals("Frações com sinais opostos não podem ser iguais!", x, z);
     }

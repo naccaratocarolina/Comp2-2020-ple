@@ -1,10 +1,11 @@
 import java.util.Objects;
 
-public class Fracao {
+public class Fracao
+{
 
-    public int numerador;
-    public int denominador;
-    public boolean positiva;
+    private final int numerador;
+    private final int denominador;
+    private boolean positiva;
     private int sinal;
 
     /**
@@ -20,6 +21,7 @@ public class Fracao {
         this.numerador = numerador;
         this.denominador = denominador;
         this.positiva = positiva;
+        this.sinal = positiva? 1:-1;
     }
 
     /**
@@ -33,16 +35,6 @@ public class Fracao {
     }
 
     /**
-     * Setter de numerador
-     *
-     * @param numerador
-     */
-    public void setNumerador(int numerador)
-    {
-        this.numerador = numerador;
-    }
-
-    /**
      * Getter de denominador
      *
      * @return retorna o denominador da fracao
@@ -50,6 +42,16 @@ public class Fracao {
     public int getDenominador()
     {
         return denominador;
+    }
+
+    /**
+     * Getter de sinal
+     *
+     * @return retorna 1 se this for positiva, -1 caso contrario
+     */
+    public int getSinal()
+    {
+        return sinal;
     }
 
     /**
@@ -63,59 +65,24 @@ public class Fracao {
     }
 
     /**
-     * Getter de sinal
+     * Funcao que verifica fracoes nulas de acordo com seu numerador.
      *
-     * @return retorna 1 se positiva for true, -1 caso contrario
+     * @return true se this for uma fracao nula, false caso contrario
      */
-    public int getSinal()
+    public boolean isFracaoNula()
     {
-        return sinal;
+        return this.numerador == 0;
     }
 
     /**
-     * Setter de sinal
-     * Armazena 1 no att sinal se positiva for true, -1 caso contrario
+     * Funcao que retorna o valor numerico da fracao dada, considerando seu sinal.
      *
-     * @param positiva
-     */
-    public void setSinal(boolean positiva)
-    {
-        if(positiva) this.sinal = 1;
-        else this.sinal = -1;
-    }
-
-    /**
      * @return um double com o valor numérico desta fração
      */
     public double getValorNumerico()
     {
-        return (double) this.numerador/this.denominador;
-    }
-
-    /**
-     * Funcao que trunca uma dizima infinita.
-     *
-     * @param numerador
-     * @param denominador
-     * @param precisao
-     * @return retorna a dizima truncada com a precisao dada
-     */
-    public double truncaDizima(int numerador, int denominador, int precisao) {
-        double n = (double) (numerador * (Math.pow(10, precisao)));
-        double divisaoTruncada = (double) Math.floor(n/denominador);
-        return (double) (divisaoTruncada/(Math.pow(10, precisao)));
-    }
-
-    /**
-     * Recebe um double e extrai as suas n casas decimais.
-     *
-     * @param numero
-     * @return retorna um inteiro correspondente as casas decimais do double dado
-     */
-    public String obtemParteDecimal(double numero)
-    {
-        String num = String.valueOf(numero);
-        return num.substring(2);
+        if(this.numerador == 0) return 0;
+        return this.sinal*((double) this.numerador/ (double) this.denominador);
     }
 
     /**
@@ -128,7 +95,7 @@ public class Fracao {
     {
         int mdc = this.mdc(this.numerador, this.denominador);
         if(mdc == 1) return this;
-        return new Fracao(this.numerador/mdc, this.denominador/mdc, positiva);
+        return new Fracao(this.numerador/mdc, this.denominador/mdc, this.positiva);
     }
 
     /**
@@ -144,17 +111,49 @@ public class Fracao {
         return mdc(b, a % b);
     }
 
+    /**
+     * Funcao que formata o display da fracao this
+     *
+     * @return String formatada
+     */
+    public String formataFracao()
+    {
+        return String.format("%d / %d", this.getSinal() * this.getNumerador(), this.getDenominador());
+    }
+
+    /**
+     * Override de equals.
+     * Estabelecendo a nova regra de comparacao de fracoes.
+     * Duas fracoes sao consideradas iguais se o numerador, denominador e sinal da sua funcao geratriz forem iguais.
+     *
+     * @param object recebe um objeto generico
+     * @return true se as funcoes forem iguais, false caso contrario
+     */
     @Override
     public boolean equals(Object object)
     {
         if (this == object) return true;
         if (!(object instanceof Fracao)) return false;
         Fracao fracao = (Fracao) object;
-        return numerador == fracao.numerador &&
-                denominador == fracao.denominador &&
-                positiva == fracao.positiva;
+
+        //Compara funcoes nulas e corrige seu sinal
+        if(this.isFracaoNula() && fracao.isFracaoNula())
+        {
+            this.positiva = false;
+            fracao.positiva = false;
+            return true;
+        }
+
+        //Compara as funcoes de acordo com a nova regra
+        return this.getFracaoGeratriz().getNumerador() == fracao.getFracaoGeratriz().getNumerador() &&
+                this.getFracaoGeratriz().getDenominador() == fracao.getFracaoGeratriz().getDenominador() &&
+                this.getFracaoGeratriz().isPositiva() == fracao.getFracaoGeratriz().isPositiva();
     }
 
+    /**
+     * Override de hashCode.
+     * @return
+     */
     @Override
     public int hashCode()
     {
