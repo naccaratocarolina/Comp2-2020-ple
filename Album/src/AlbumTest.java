@@ -13,11 +13,17 @@ public class AlbumTest {
 
     private Random random = new Random();
 
+    /**
+     * Método setUp que será execu
+     */
     @Before
     public void setUp() {
         album = new Album(TOTAL_FIGURINHAS, QUANT_FIGURINHAS_POR_PACOTE);
     }
 
+    /**
+     * Testa o recebimento de um pacotinho qualquer e preenchimento dessas figurinhas no album.
+     */
     @Test
     public void testarRecebimentoPacotinhoQualquer() {
         Figurinha[] novoPacotinho = criarPacotinho(null);
@@ -30,6 +36,9 @@ public class AlbumTest {
         }
     }
 
+    /**
+     * Testa o recebimento de figurinhas repetidas.
+     */
     @Test
     public void testarRecebimentoFigurinhaRepedita() {
         int[] posicoes = new int[] {1, 1, 1};
@@ -57,6 +66,11 @@ public class AlbumTest {
         assertEquals(2, album.getQuantDePacotinhosComprados());
     }
 
+    /**
+     * Testa o preenchimento automatido do album.
+     * Se o album estiver com pelo menos 90% das figurinhas "coladas", esperamos que,
+     * ao chamar a funcao encomendarFigurinhasRestantes(), o album esteja completo.
+     */
     @Test
     public void testarPreenchimentoAutomaticoDasUltimasFigurinhas() {
         //Album ainda esta vazio - esperamos que nada aconteca
@@ -64,7 +78,7 @@ public class AlbumTest {
         assertEquals(0, album.getQuantFigurinhasColadas());
 
         //Preenchemos 90% do album
-        while (album.getQuantFigurinhasColadas() <=
+        while (album.getQuantFigurinhasColadas() <
         TOTAL_FIGURINHAS * Album.PREENCHIMENTO_MINIMO_PARA_PERMITIR_AUTO_COMPLETAR) {
             Figurinha[] pacotinho = criarPacotinho(null);
             album.receberNovoPacotinho(pacotinho);
@@ -76,6 +90,12 @@ public class AlbumTest {
         assertEquals(TOTAL_FIGURINHAS, album.getQuantFigurinhasColadas());
     }
 
+    /**
+     * Funcao que cria um pacotinho com a quantidade de figurinhas pre definidas.
+     *
+     * @param posicoesDesejadas array que contem as posicoes das figurinhas a serem criadas no pacotinho
+     * @return o pacotinho recem criado
+     */
     private Figurinha[] criarPacotinho(int[] posicoesDesejadas) {
         Figurinha[] novoPacotinho = new Figurinha[QUANT_FIGURINHAS_POR_PACOTE];
         for (int i = 0; i < QUANT_FIGURINHAS_POR_PACOTE; i++) {
@@ -88,6 +108,11 @@ public class AlbumTest {
         return novoPacotinho;
     }
 
+    /**
+     * Funcao que aleatoriza um inteiro.
+     *
+     * @return um inteiro aleatorio dentro do range do numero total de figurinhas + 1
+     */
     private int escolherPosicaoAleatoria() {
         return random.nextInt(TOTAL_FIGURINHAS) + 1;
     }
