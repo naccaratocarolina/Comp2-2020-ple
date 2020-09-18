@@ -6,7 +6,7 @@ public class Figurinha {
 
     public Figurinha(int posicao) {
         this.posicao = posicao;
-        this.urlImagem = urlImagem;
+        this.urlImagem = String.format("http://urlFakeDaFigurinha%d.jpg", posicao));
     }
 
     public int getPosicao() {
