@@ -40,7 +40,7 @@ public class AlbumTest {
         assertEquals(QUANT_FIGURINHAS_POR_PACOTE - 1, album.getQuantFigurinhasRepetidas());
         assertTrue(album.possuiFigurinhaRepetida(1));
         assertTrue(album.possuiFigurinhaRepetida(primeiroPacotinho[0]));
-        assertTrue(album.possuiFigurinhaRepetida(new Figurinha(1)));
+        assertTrue(album.possuiFigurinhaRepetida(new Figurinha(1, "qualquerURL")));
 
         posicoes = new int[] {10, 23, 1};
         Figurinha[] segundoPacotinho = criarPacotinho(posicoes);
@@ -81,7 +81,8 @@ public class AlbumTest {
         for (int i = 0; i < QUANT_FIGURINHAS_POR_PACOTE; i++) {
             int posicaoDaFigurinha = posicoesDesejadas == null ? escolherPosicaoAleatoria() :
                     posicoesDesejadas[i];
-            Figurinha figurinha = new Figurinha(posicaoDaFigurinha);
+            Figurinha figurinha = new Figurinha(posicaoDaFigurinha,
+                    String.format("http://urlFakeDaFigurinha%d.jpg", posicaoDaFigurinha));
             novoPacotinho[i] = figurinha;
         }
         return novoPacotinho;

@@ -4,9 +4,9 @@ public class Figurinha {
     public int posicao;
     public String urlImagem;
 
-    public Figurinha(int posicao) {
+    public Figurinha(int posicao, String urlImagem) {
         this.posicao = posicao;
-        this.urlImagem = String.format("http://urlFakeDaFigurinha%d.jpg", posicao));
+        this.urlImagem = urlImagem;
     }
 
     public int getPosicao() {

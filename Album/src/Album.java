@@ -119,7 +119,8 @@ public class Album {
         if(this.getPorcentagemDoAlbumPreenchida() >= PREENCHIMENTO_MINIMO_PARA_PERMITIR_AUTO_COMPLETAR) {
             for(int i=0; i<this.totalFigurinhas; i++) {
                 if(this.figurinhas[i] == null) {
-                    Figurinha figurinhaQueFalta = new Figurinha(i);
+                    Figurinha figurinhaQueFalta = new Figurinha(i,
+                            String.format("http://urlFakeDaFigurinha%d.jpg", i));
                     this.colaFigurinhaNoAlbum(figurinhaQueFalta);
                 }
             }
