@@ -1,5 +1,4 @@
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.Random;
@@ -14,7 +13,8 @@ public class AlbumTest {
     private Random random = new Random();
 
     /**
-     * Método setUp que será execu
+     * Método setUp que será chamado antes de cada teste ser executado.
+     * Usaremos ele para criar um objeto Album.
      */
     @Before
     public void setUp() {

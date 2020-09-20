@@ -1,46 +1,41 @@
 import java.util.ArrayList;
-import java.util.Objects;
 
 public class Album {
+    //Variavel estatica que armazena a porcentagem minima para auto completar o album
     public static final float PREENCHIMENTO_MINIMO_PARA_PERMITIR_AUTO_COMPLETAR = 0.9f;
 
-    //Atributos de Album
-    public int totalFigurinhas;
-    public int quantFigurinhasPorPacotinho;
+    //Atributos que caracterizam o Album
+    public final int totalFigurinhas;
+    public final int quantFigurinhasPorPacotinho;
 
     //Array de figurinhas do album
     public Figurinha[] figurinhas;
 
     //Array de figurinhas repetidas
-    private Figurinha[] figurinhasRepetidas;
-    public int quantFigurinhasRepetidas;
+    private final ArrayList<Figurinha> figurinhasRepetidas;
 
     //Variavel que vai armazenar a quantidade de pacotinhos comprados
     public int quantDePacotinhosComprados;
 
+    /**
+     * Construtor de Album.
+     *
+     * @param totalFigurinhas total de figurinhas do album
+     * @param quantFigurinhasPorPacotinho quantidade de figurinhas por pacotinho
+     */
     public Album(int totalFigurinhas, int quantFigurinhasPorPacotinho) {
         //Inicializa atributos passados no construtor
         this.totalFigurinhas = totalFigurinhas;
         this.quantFigurinhasPorPacotinho = quantFigurinhasPorPacotinho;
 
-        //Inicializa um array vazio com o tamanho total de figurinhas do album
+        //Inicializa um array vazio com o tamanho total de figurinhas do album + 1 (para podermos acessar o indice 200)
         this.figurinhas = new Figurinha[totalFigurinhas + 1];
 
-        //Inicializa um array vazio de figurinhas repetidas com o tamanho total de figurinhas do album
-        this.figurinhasRepetidas = new Figurinha[totalFigurinhas + 1];
-        this.quantFigurinhasRepetidas = 0;
+        //Inicializa um array vazio sem tamanho a priori pois nao sabemos quantas figurinhas repetidas teremos
+        this.figurinhasRepetidas = new ArrayList<>();
 
         //Quantidade inicial de pacotinhos eh zero
-        this.quantFigurinhasPorPacotinho = 0;
-    }
-
-    /**
-     * Getter de figurinhas.
-     *
-     * @return array de figurinhas do album
-     */
-    public Figurinha[] getFigurinhas() {
-        return figurinhas;
+        this.quantDePacotinhosComprados = 0;
     }
 
     /**
@@ -62,6 +57,25 @@ public class Album {
     }
 
     /**
+     * Getter de figurinhas.
+     *
+     * @return array de figurinhas do album
+     */
+    public Figurinha[] getFigurinhas() {
+        return figurinhas;
+    }
+
+    /**
+     * Setter de figurinhas.
+     *
+     * @param figurinhas array de figurinhas do album
+     */
+    public void setFigurinhas(Figurinha[] figurinhas) {
+        this.figurinhas = figurinhas;
+    }
+
+    /**
+     * Getter de quantDePacotinhosComprados.
      * Retorna a quantidade de pacotinhos comprados por determinado usuario.
      *
      * @return quantidade de pacotinhos comprados
@@ -76,7 +90,9 @@ public class Album {
      * @return quantidade de figurinhas coladas
      */
     public int getQuantFigurinhasColadas() {
+        //Inicializa a variavel local
         int quantFigurinhasColadas = 0;
+        //Percorre o array de figurinhas procurando por posicoes nao nulas e incrementa quantFigurinhasColadas
         for(int i=0; i<this.totalFigurinhas; i++) {
             if(this.figurinhas[i] != null) quantFigurinhasColadas++;
         }
@@ -93,12 +109,12 @@ public class Album {
     }
 
     /**
-     * Getter de quantFigurinhasRepetidas.
+     * Verifica o tamanho do ArrayList com as figurinhas repetidas.
      *
      * @return quantidade de figurinhas repetidas
      */
     public int getQuantFigurinhasRepetidas() {
-        return quantFigurinhasRepetidas;
+        return this.figurinhasRepetidas.size();
     }
 
     /**
@@ -107,7 +123,7 @@ public class Album {
      * @param pacotinho de figurinhas
      */
     public void receberNovoPacotinho(Figurinha[] pacotinho) {
-        //incrementa a variavel que armazena a quant de pacotinhos comprados
+        //Incrementa a variavel que armazena a quant de pacotinhos comprados
         this.quantDePacotinhosComprados++;
         //for each pacotinho as figurinha
         for(Figurinha figurinha : pacotinho) {
@@ -130,18 +146,8 @@ public class Album {
         }
         //caso contrario, adiciona a mesma no array de figurinhas repetidas
         else {
-            this.armazenaFigurinhaRepetida(figurinha);
+            this.figurinhasRepetidas.add(figurinha);
         }
-    }
-
-    /**
-     * Método auxiliar que armazena uma figurinha repetida no array de figurinhas repetidas.
-     *
-     * @param figurinhaRepetida figurinha repetida
-     */
-    private void armazenaFigurinhaRepetida(Figurinha figurinhaRepetida) {
-        this.figurinhasRepetidas[figurinhaRepetida.getPosicao()] = figurinhaRepetida;
-        this.quantFigurinhasRepetidas++;
     }
 
     /**
@@ -171,7 +177,11 @@ public class Album {
      * @return true caso a figurinha na posicao dada seja repetida, false caso contrario
      */
     public boolean possuiFigurinhaRepetida(int posicao) {
-        return this.figurinhasRepetidas[posicao] != null;
+        //for each figurinhasRepetidas as figurinhaRepetida
+        for(Figurinha figurinhaRepetida : this.figurinhasRepetidas) {
+            if(figurinhaRepetida.getPosicao() == posicao) return true;
+        }
+        return false;
     }
 
     /**
@@ -191,7 +201,7 @@ public class Album {
      * @return o percentual de figurinhas "coladas" no album
      */
     private float getPorcentagemDoAlbumPreenchida() {
-        return (float) this.getQuantFigurinhasColadas()/ (float) this.totalFigurinhas;
+        return (float) this.getQuantFigurinhasColadas() / (float) this.totalFigurinhas;
     }
 
     /**
