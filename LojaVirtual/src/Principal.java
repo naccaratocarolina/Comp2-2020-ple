@@ -1,6 +1,6 @@
 public class Principal {
     public static void main(String[] args) {
-        LojaVirtual loja = new LojaVirtual();
+        LojaVirtual loja = new LojaVirtual("Minha Loja Virtual");
         Roupa blusa = new Roupa(10, 35, "Roupas femininas", 50, 'M', "preto");
         Roupa calca = new Roupa(50, 120, "Roupas femininas", 6, 'G', "branco");
 

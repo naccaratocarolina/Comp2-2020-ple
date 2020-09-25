@@ -12,42 +12,27 @@ public class LojaVirtualTest {
     //Inicializando o produto e seus atributos
     private Produto produto;
     private float precoProduto;
-    private String categoriaProduto;
     private int quantEmEstoqueProduto;
 
     //Inicializando o livro e seus atributos
     private Livro livro;
-    private int pesoLivro;
     private float precoLivro;
-    private String categoriaLivro;
     private int quantEmEstoqueLivro;
-    private String titulo;
-    private String autor;
-    private int anoDePublicacao;
-    private int numDePaginas;
 
     @Before
     public void setUp() {
         //Criando a Loja Virtual
-        loja = new LojaVirtual();
+        loja = new LojaVirtual("Minha Loja Virtual");
 
         //Criando o Produto
-        int pesoProduto = 10;
-        precoProduto = 10;
-        categoriaProduto = "Categoria 1";
         quantEmEstoqueProduto = 5;
-        produto = new Produto(pesoProduto, precoProduto, categoriaProduto, quantEmEstoqueProduto);
+        precoProduto = 10;
+        produto = new Produto(10, precoProduto, "Categoria 1", quantEmEstoqueProduto);
 
         //Criando o Livro
-        pesoLivro = 20;
-        precoLivro = 50;
-        categoriaLivro = "Categoria 2";
         quantEmEstoqueLivro = 10;
-        titulo = "Titulo";
-        autor = "Autor";
-        anoDePublicacao = 2020;
-        numDePaginas = 500;
-        livro = new Livro(pesoLivro, precoLivro, categoriaLivro, quantEmEstoqueLivro, titulo, autor, anoDePublicacao, numDePaginas);
+        precoLivro = 50;
+        livro = new Livro(20, precoLivro, "Categoria 2", quantEmEstoqueLivro, "Titulo", "Autor", 2020, 500);
     }
 
     @Test

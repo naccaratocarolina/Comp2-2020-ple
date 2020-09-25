@@ -1,6 +1,8 @@
 import java.util.ArrayList;
 
 public class LojaVirtual {
+    private String nomeDaLoja;
+
     //Array que armazena os produtos do estoque
     private ArrayList<Produto> produtosDoEstoque;
 
@@ -16,7 +18,8 @@ public class LojaVirtual {
     /**
      * Construtor de LojaVirtual.
      */
-    public LojaVirtual() {
+    public LojaVirtual(String nomeDaLoja) {
+        this.nomeDaLoja = nomeDaLoja;
         this.produtosDoEstoque = new ArrayList<Produto>();
         this.vendas = new ArrayList<String>();
         //Adicionando a Header do Historico de Vendas
