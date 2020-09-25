@@ -6,14 +6,16 @@ import static org.junit.Assert.assertEquals;
 public class LojaVirtualTest {
     private static final int FLOAT_DELTA = 0;
 
+    //Inicializando a loja virtual
     private LojaVirtual loja;
 
+    //Inicializando o produto e seus atributos
     private Produto produto;
-    private int pesoProduto;
     private float precoProduto;
     private String categoriaProduto;
     private int quantEmEstoqueProduto;
 
+    //Inicializando o livro e seus atributos
     private Livro livro;
     private int pesoLivro;
     private float precoLivro;
@@ -30,7 +32,7 @@ public class LojaVirtualTest {
         loja = new LojaVirtual();
 
         //Criando o Produto
-        pesoProduto = 10;
+        int pesoProduto = 10;
         precoProduto = 10;
         categoriaProduto = "Categoria 1";
         quantEmEstoqueProduto = 5;
@@ -74,5 +76,17 @@ public class LojaVirtualTest {
         loja.incluirProdutoNoEstoque(livro, 3);
         loja.efetuarVenda(livro, 100);
         assertEquals(0, loja.getTotalValorVendas(), FLOAT_DELTA);
+    }
+
+    @Test
+    public void testarPrintarHistoricoDeVendas() {
+        loja.incluirProdutoNoEstoque(livro, quantEmEstoqueLivro);
+        loja.incluirProdutoNoEstoque(produto, quantEmEstoqueProduto);
+        loja.efetuarVenda(livro, quantEmEstoqueLivro);
+        loja.efetuarVenda(produto, quantEmEstoqueProduto);
+        assertEquals(String.format("Id - Preco Unitário - Quantidade vendida - Valor total da venda\n" +
+                livro.getId() + " - " + livro.getPrecoEmReais() + " - " + quantEmEstoqueLivro + " - " + livro.getPrecoEmReais() * quantEmEstoqueLivro + "\n" +
+                produto.getId() + " - " + produto.getPrecoEmReais() + " - " + quantEmEstoqueProduto + " - " + produto.getPrecoEmReais() * quantEmEstoqueProduto + "\n"),
+                loja.printarHistoricoDeVendas());
     }
 }
