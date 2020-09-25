@@ -3,10 +3,12 @@ import java.util.ArrayList;
 public class LojaVirtual {
     private ArrayList<Produto> produtosDoEstoque;
     private int tamanhoEstoque;
+    private float totalValorVendas;
 
     public LojaVirtual() {
         this.produtosDoEstoque = new ArrayList<Produto>();
         this.tamanhoEstoque = 0;
+        this.totalValorVendas = 0;
     }
 
     public ArrayList<Produto> getProdutosDoEstoque() {
@@ -25,6 +27,14 @@ public class LojaVirtual {
         this.tamanhoEstoque = tamanhoEstoque;
     }
 
+    public float getTotalValorVendas() {
+        return totalValorVendas;
+    }
+
+    public void setTotalValorVendas(float totalValorVendas) {
+        this.totalValorVendas = totalValorVendas;
+    }
+
     public void incluirProdutoNoEstoque(Produto produto, int quantidade) {
         if(produto.getQuantEmEstoque() >= quantidade) {
             if(!verificaProdutoNoEstoque(produto)) {
@@ -36,7 +46,7 @@ public class LojaVirtual {
 
     private boolean verificaProdutoNoEstoque(Produto produto) {
         for(Produto itemNoEstoque : this.produtosDoEstoque) {
-            if(itemNoEstoque == produto) return true;
+            if(itemNoEstoque.getId() == produto.getId()) return true;
         }
         return false;
     }
@@ -56,12 +66,13 @@ public class LojaVirtual {
 
     public String efetuarVenda(Produto produto, int quantidade) {
         if(verificaProdutoNoEstoque(produto) && produto.getQuantEmEstoque() >= quantidade) {
-
+            this.receberPagamento(produto.getPrecoEmReais() * quantidade);
+            this.atualizaEstoque("-", produto, quantidade);
         }
-        return "";
+        return String.format("Produto ");
     }
 
-    private void receberPagamento() {
-        
+    private void receberPagamento(float valor) {
+        this.totalValorVendas += valor;
     }
 }

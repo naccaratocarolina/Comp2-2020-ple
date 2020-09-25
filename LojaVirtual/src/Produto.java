@@ -1,3 +1,5 @@
+import java.util.Objects;
+
 public class Produto {
     private static long idAutoIncrement = 1;
     protected final long id;
@@ -56,5 +58,18 @@ public class Produto {
 
     public void setQuantEmEstoque(int quantEmEstoque) {
         this.quantEmEstoque = quantEmEstoque;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) return true;
+        if (!(object instanceof Produto)) return false;
+        Produto produto = (Produto) object;
+        return this.getId() == produto.getId();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

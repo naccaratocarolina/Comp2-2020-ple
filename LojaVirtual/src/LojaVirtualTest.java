@@ -4,6 +4,8 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 
 public class LojaVirtualTest {
+    private static final int FLOAT_DELTA = 0;
+
     private LojaVirtual loja;
 
     private Produto produto;
@@ -69,6 +71,8 @@ public class LojaVirtualTest {
     @Test
     public void testarEfetuarVenda() {
         loja.incluirProdutoNoEstoque(livro, quantEmEstoqueLivro);
-
+        loja.efetuarVenda(livro, 2);
+        assertEquals(2*precoLivro, loja.getTotalValorVendas(), FLOAT_DELTA);
+        assertEquals(quantEmEstoqueLivro - 2, loja.getTamanhoEstoque());
     }
 }
