@@ -62,17 +62,17 @@ public class LojaVirtualTest {
     }
 
     @Test
-    public void testarIncluirProdutoComQuantidadeNaoDisponivelNoEstoque() {
-        //Como tentamos adicionar uma quantidade nao disponivel no estoque, esperamos que o estoque permaneca vazio
-        loja.incluirProdutoNoEstoque(livro, 100);
-        assertEquals(0, loja.getTamanhoEstoque());
-    }
-
-    @Test
     public void testarEfetuarVenda() {
         loja.incluirProdutoNoEstoque(livro, quantEmEstoqueLivro);
         loja.efetuarVenda(livro, 2);
         assertEquals(2*precoLivro, loja.getTotalValorVendas(), FLOAT_DELTA);
         assertEquals(quantEmEstoqueLivro - 2, loja.getTamanhoEstoque());
+    }
+
+    @Test
+    public void testarVendaDeProdutoForaDoEstoque() {
+        loja.incluirProdutoNoEstoque(livro, 3);
+        loja.efetuarVenda(livro, 100);
+        assertEquals(0, loja.getTotalValorVendas(), FLOAT_DELTA);
     }
 }

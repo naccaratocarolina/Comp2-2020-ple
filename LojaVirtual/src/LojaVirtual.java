@@ -5,8 +5,11 @@ public class LojaVirtual {
     private int tamanhoEstoque;
     private float totalValorVendas;
 
+    private ArrayList<String> vendas;
+
     public LojaVirtual() {
         this.produtosDoEstoque = new ArrayList<Produto>();
+        this.vendas = new ArrayList<String>();
         this.tamanhoEstoque = 0;
         this.totalValorVendas = 0;
     }
@@ -36,12 +39,10 @@ public class LojaVirtual {
     }
 
     public void incluirProdutoNoEstoque(Produto produto, int quantidade) {
-        if(produto.getQuantEmEstoque() >= quantidade) {
-            if(!verificaProdutoNoEstoque(produto)) {
-                this.produtosDoEstoque.add(produto);
-            }
-            this.atualizaEstoque("+", produto, quantidade);
+        if(!verificaProdutoNoEstoque(produto)) {
+            this.produtosDoEstoque.add(produto);
         }
+        this.atualizaEstoque("+", produto, quantidade);
     }
 
     private boolean verificaProdutoNoEstoque(Produto produto) {
@@ -65,14 +66,33 @@ public class LojaVirtual {
     }
 
     public String efetuarVenda(Produto produto, int quantidade) {
-        if(verificaProdutoNoEstoque(produto) && produto.getQuantEmEstoque() >= quantidade) {
-            this.receberPagamento(produto.getPrecoEmReais() * quantidade);
+        if(verificaProdutoNoEstoque(produto) && produto.getQuantEmEstoque() >= quantidade &&
+                this.receberPagamento(produto.getPrecoEmReais() * quantidade)) {
+            //atualiza o estoque
             this.atualizaEstoque("-", produto, quantidade);
+
+            return this.gerarRecibo(produto, quantidade);
         }
-        return String.format("Produto ");
+        return "";
     }
 
-    private void receberPagamento(float valor) {
+    private boolean receberPagamento(float valor) {
         this.totalValorVendas += valor;
+        return true;
+    }
+
+    private String gerarRecibo(Produto produto, int quantidade) {
+        String novaVenda = String.format(produto.getId() + " - " + produto.getPrecoEmReais() + " - " + quantidade);
+        this.vendas.add(novaVenda);
+        return novaVenda;
+    }
+
+    public String printarHistoricoDeVendas() {
+        StringBuilder historicoDeVendas = new StringBuilder();
+        //Caso nenhuma venda tenha sido realizada ainda
+        if(this.vendas.size() == 0) return historicoDeVendas.toString();
+        //Percorre o array de vendas e armazena em historidoDeVendas
+        for (String venda : this.vendas) historicoDeVendas.append(venda).append("\n");
+        return historicoDeVendas.toString();
     }
 }
