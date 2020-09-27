@@ -107,15 +107,6 @@ public class LojaVirtual {
     }
 
     /**
-     * Setter para totalValorVenda.
-     *
-     * @param totalValorVenda valor total da venda de x quantidades de um produto
-     */
-    public void settotalValorVenda(float totalValorVenda) {
-        this.totalValorVenda = totalValorVenda;
-    }
-
-    /**
      * Funcao que verifica a quantidade de dado produto em estoque.
      *
      * @param produto
