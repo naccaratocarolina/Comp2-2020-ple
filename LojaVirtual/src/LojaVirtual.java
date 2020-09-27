@@ -10,7 +10,7 @@ public class LojaVirtual {
     private int tamanhoEstoque;
 
     //Variavel que armazena o valor total da venda de x quantidades de um produto
-    private float totalValorVendas;
+    private float totalValorVenda;
 
     //Array que armazena todas as vendas realizadas por uma Loja Virtual
     private ArrayList<String> vendas;
@@ -22,9 +22,6 @@ public class LojaVirtual {
         this.nomeDaLoja = nomeDaLoja;
         this.produtosDoEstoque = new ArrayList<Produto>();
         this.vendas = new ArrayList<String>();
-        //Adicionando a Header do Historico de Vendas
-        String header = String.format("Id - Preco Unitário - Quantidade vendida - Valor total da venda");
-        this.vendas.add(header);
     }
 
     /**
@@ -64,21 +61,34 @@ public class LojaVirtual {
     }
 
     /**
-     * Getter de totalValorVendas.
+     * Getter de totalValorVenda.
      *
-     * @return valor total da venda de x quantidades de um produto
+     * @return valor total da venda de x quantidades vendida de um produto
      */
-    public float getTotalValorVendas() {
-        return totalValorVendas;
+    public float getTotalValorVenda() {
+        return totalValorVenda;
     }
 
     /**
-     * Setter para totalValorVendas.
+     * Setter para totalValorVenda.
      *
-     * @param totalValorVendas valor total da venda de x quantidades de um produto
+     * @param totalValorVenda valor total da venda de x quantidades de um produto
      */
-    public void setTotalValorVendas(float totalValorVendas) {
-        this.totalValorVendas = totalValorVendas;
+    public void settotalValorVenda(float totalValorVenda) {
+        this.totalValorVenda = totalValorVenda;
+    }
+
+    /**
+     * Funcao que verifica a quantidade de dado produto em estoque.
+     *
+     * @param produto
+     * @return quantidade total disponivel em estoque deste produto
+     */
+    private int getQuantDoProdutoNoEstoque(Produto produto) {
+        //Se o produto estiver "registrado" no array de produtos em estoque
+        if(this.verificaProdutoNoEstoque(produto)) return produto.getQuantEmEstoque();
+        //Caso contrario, lancar uma excecao
+        return 0;
     }
 
     /**
@@ -110,7 +120,7 @@ public class LojaVirtual {
      * @return o recibo da compra, se as condicoes forem atendidas, uma string vazia caso contrario
      */
     public String efetuarVenda(Produto produto, int quantidade) {
-        if(verificaProdutoNoEstoque(produto) && produto.getQuantEmEstoque() >= quantidade &&
+        if(verificaProdutoNoEstoque(produto) && getQuantDoProdutoNoEstoque(produto) >= quantidade &&
                 this.receberPagamento(produto.getPrecoEmReais() * quantidade)) {
             //atualiza o estoque
             this.atualizaEstoque("-", produto, quantidade);
@@ -130,7 +140,7 @@ public class LojaVirtual {
         StringBuilder historicoDeVendas = new StringBuilder();
         //Caso nenhuma venda tenha sido realizada ainda
 
-        if(this.vendas.size() == 0) return historicoDeVendas.toString();
+        if(this.vendas.size() == 0) return historicoDeVendas.toString().toString();
         //Percorre o array de vendas e armazena em historidoDeVendas
         for (String venda : this.vendas) historicoDeVendas.append(venda).append("\n");
         return historicoDeVendas.toString();
@@ -144,7 +154,7 @@ public class LojaVirtual {
      */
     private boolean verificaProdutoNoEstoque(Produto produto) {
         for(Produto itemNoEstoque : this.produtosDoEstoque) {
-            if(itemNoEstoque.getId() == produto.getId()) return true;
+            if(itemNoEstoque.equals(produto)) return true;
         }
         return false;
     }
@@ -172,13 +182,13 @@ public class LojaVirtual {
     }
 
     /**
-     * Funcao que recebe o valor total da compra e incrementa a variavel totalValorVendas.
+     * Funcao que recebe o valor total da compra e incrementa a variavel totalValorVenda.
      *
      * @param valor valor da compra
      * @return true, que indica que o pagamento foi realizado com sucesso
      */
     private boolean receberPagamento(float valor) {
-        this.totalValorVendas += valor;
+        this.totalValorVenda += valor;
         return true;
     }
 
@@ -190,8 +200,8 @@ public class LojaVirtual {
      * @return o recibo da compra, indicando o id do produto, preco unitario, quantidade vendida e valor total da compra
      */
     private String gerarRecibo(Produto produto, int quantidade) {
-        String novaVenda = String.format(produto.getId() + " - " + produto.getPrecoEmReais() + " - " +
-                quantidade + " - " + produto.getPrecoEmReais() * quantidade);
+        String novaVenda = produto.toString() + "\nQuantidade vendida: " +
+                quantidade + "\nValor total da compra: " + produto.getPrecoEmReais() * quantidade;
         this.vendas.add(novaVenda);
         return novaVenda;
     }

@@ -6,10 +6,10 @@ public class Livro extends Produto {
     public final String autor;
 
     //Ano de publicacao do livro
-    public int anoDePublicacao;
+    public final int anoDePublicacao;
 
     //Numero de paginas do livro
-    public int numDePaginas;
+    public final int numDePaginas;
 
     /**
      * Construtor de Livro.
@@ -60,29 +60,11 @@ public class Livro extends Produto {
     }
 
     /**
-     * Setter de anoDePublicacao.
-     *
-     * @param anoDePublicacao ano de publicacao do livro
-     */
-    public void setAnoDePublicacao(int anoDePublicacao) {
-        this.anoDePublicacao = anoDePublicacao;
-    }
-
-    /**
      * Getter numDePaginas.
      *
      * @return numDePaginas numero de paginas do livro
      */
     public int getNumDePaginas() {
         return numDePaginas;
-    }
-
-    /**
-     * Setter de numDePaginas.
-     *
-     * @param numDePaginas numero de paginas do livro
-     */
-    public void setNumDePaginas(int numDePaginas) {
-        this.numDePaginas = numDePaginas;
     }
 }

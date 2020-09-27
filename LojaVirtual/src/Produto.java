@@ -135,4 +135,16 @@ public class Produto {
     public int hashCode() {
         return Objects.hash(id);
     }
+
+    /**
+     * Override do metodo toString para Produto.
+     * Este método formata uma string com todas as informacoes essenciais de Produto.
+     *
+     * @return
+     */
+    @Override
+    public String toString() {
+        return  "ID do produto: " + this.getId() +
+                "\nPreço unitário em Reais: " + this.getPrecoEmReais();
+    }
 }
