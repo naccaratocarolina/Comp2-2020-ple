@@ -20,6 +20,9 @@ public class LojaVirtualTest {
     private float precoLivro;
     private int quantEmEstoqueLivro;
 
+    /**
+     * Metodo setUp que sera executado antes de cada funcao de teste.
+     */
     @Before
     public void setUp() {
         //Criando a Loja Virtual
