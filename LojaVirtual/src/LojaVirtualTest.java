@@ -45,7 +45,8 @@ public class LojaVirtualTest {
     @Test
     public void testarIncluirProdutoNoEstoque() {
         //Quantidade inicial no estoque eh zero
-        assertEquals(0, loja.getTamanhoEstoque());
+        assertEquals("Esperamos que assim que criarmos uma loja, o seu estoque esteja vazio.",
+                0, loja.getTamanhoEstoque());
 
         //Incluir os produtos no estoque
         loja.incluirProdutoNoEstoque(produto, quantEmEstoqueProduto);
@@ -54,6 +55,10 @@ public class LojaVirtualTest {
         //Total da quantidade de produtos tem que ser igual ao output da funcao que verifica o estoque
         assertEquals("O tamanho do estoque deve ser o somatorio da quantidade de produtos que foram adicionados.",
                 quantEmEstoqueProduto + quantEmEstoqueLivro, loja.getTamanhoEstoque());
+
+        loja.incluirProdutoNoEstoque(livro, 2);
+        assertEquals("Se o produto ja estiver registrado no estoque, esperamos que ele nao seja acrescentado no array de produtos no estoque.",
+                2, loja.getProdutosDoEstoque().size());
     }
 
     /**
