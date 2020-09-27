@@ -52,7 +52,6 @@ public class LojaVirtualTest {
         loja.incluirProdutoNoEstoque(produto, quantEmEstoqueProduto);
         loja.incluirProdutoNoEstoque(livro, quantEmEstoqueLivro);
 
-        //Total da quantidade de produtos tem que ser igual ao output da funcao que verifica o estoque
         assertEquals("O tamanho do estoque deve ser o somatorio da quantidade de produtos que foram adicionados.",
                 quantEmEstoqueProduto + quantEmEstoqueLivro, loja.getTamanhoEstoque());
 
