@@ -54,11 +54,9 @@ public class LojaVirtualTest {
 
         assertEquals("O tamanho do estoque deve ser o somatorio da quantidade de produtos que foram adicionados.",
                 quantEmEstoqueProduto + quantEmEstoqueLivro, loja.getTamanhoEstoque());
-
         loja.incluirProdutoNoEstoque(livro, 2);
         assertEquals("Se o produto ja estiver registrado no estoque, esperamos que ele nao seja acrescentado no array de produtos no estoque.",
                 2, loja.getProdutosDoEstoque().size());
-
         assertEquals("Apos adicionarmos mais produtos no estoque, esperamos que a quantidade em estoque desse produto seja incrementada.",
                 2*quantEmEstoqueLivro + 2, livro.getQuantEmEstoque());
     }
