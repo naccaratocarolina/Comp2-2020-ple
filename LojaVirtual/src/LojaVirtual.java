@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 
 public class LojaVirtual {
+    //Nome da Loja
     private String nomeDaLoja;
 
     //Array que armazena os produtos do estoque

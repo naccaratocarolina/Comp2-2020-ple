@@ -9,6 +9,5 @@ public class Principal {
         loja.efetuarVenda(blusa, 5);
         loja.efetuarVenda(calca, 50);
         System.out.println(loja.printarHistoricoDeVendas());
-        System.out.println(blusa.toString());
     }
 }
