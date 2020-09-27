@@ -2,7 +2,7 @@ import java.util.ArrayList;
 
 public class LojaVirtual {
     //Nome da Loja
-    private String nomeDaLoja;
+    private final String nomeDaLoja;
 
     //Array que armazena os produtos do estoque
     private ArrayList<Produto> produtosDoEstoque;
@@ -14,7 +14,7 @@ public class LojaVirtual {
     private float totalValorVenda;
 
     //Array que armazena todas as vendas realizadas por uma Loja Virtual
-    private ArrayList<String> vendas;
+    private ArrayList<String> reciboDasVendas;
 
     /**
      * Construtor de LojaVirtual.
@@ -22,7 +22,16 @@ public class LojaVirtual {
     public LojaVirtual(String nomeDaLoja) {
         this.nomeDaLoja = nomeDaLoja;
         this.produtosDoEstoque = new ArrayList<Produto>();
-        this.vendas = new ArrayList<String>();
+        this.reciboDasVendas = new ArrayList<String>();
+    }
+
+    /**
+     * Getter de nomeDaLoja.
+     *
+     * @return nome da loja virtual
+     */
+    public String getNomeDaLoja() {
+        return nomeDaLoja;
     }
 
     /**
@@ -62,12 +71,39 @@ public class LojaVirtual {
     }
 
     /**
+     * Getter de reciboDasVendas.
+     *
+     * @return array que armazena o recibo das vendas realizadas
+     */
+    public ArrayList<String> getReciboDasVendas() {
+        return reciboDasVendas;
+    }
+
+    /**
+     * Setter de reciboDasVendas.
+     *
+     * @param reciboDasVendas array que armazena o recibo das vendas realizadas
+     */
+    public void setReciboDasVendas(ArrayList<String> reciboDasVendas) {
+        this.reciboDasVendas = reciboDasVendas;
+    }
+
+    /**
      * Getter de totalValorVenda.
      *
      * @return valor total da venda de x quantidades vendida de um produto
      */
     public float getTotalValorVenda() {
         return totalValorVenda;
+    }
+
+    /**
+     * Setter de totalValorVenda.
+     *
+     * @param totalValorVenda valor total da venda de x quantidades vendida de um produto
+     */
+    public void setTotalValorVenda(float totalValorVenda) {
+        this.totalValorVenda = totalValorVenda;
     }
 
     /**
@@ -141,9 +177,9 @@ public class LojaVirtual {
         StringBuilder historicoDeVendas = new StringBuilder();
         //Caso nenhuma venda tenha sido realizada ainda
 
-        if(this.vendas.size() == 0) return historicoDeVendas.toString().toString();
+        if(this.reciboDasVendas.size() == 0) return historicoDeVendas.toString().toString();
         //Percorre o array de vendas e armazena em historidoDeVendas
-        for (String venda : this.vendas) historicoDeVendas.append(venda).append("\n");
+        for (String venda : this.reciboDasVendas) historicoDeVendas.append(venda).append("\n");
         return historicoDeVendas.toString();
     }
 
@@ -203,7 +239,7 @@ public class LojaVirtual {
     private String gerarRecibo(Produto produto, int quantidade) {
         String novaVenda = produto.toString() + "\nQuantidade vendida: " +
                 quantidade + "\nValor total da compra: " + produto.getPrecoEmReais() * quantidade;
-        this.vendas.add(novaVenda);
+        this.reciboDasVendas.add(novaVenda);
         return novaVenda;
     }
 }
