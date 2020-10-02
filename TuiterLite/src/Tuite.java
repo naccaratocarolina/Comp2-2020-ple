@@ -4,6 +4,7 @@ public class Tuite<T> {
 
     private final Usuario autor;
     private final String texto;
+    private ArrayList<String> hashtags;
 
     // hashtags?
     // objeto anexado?
@@ -30,6 +31,10 @@ public class Tuite<T> {
     }
 
     public ArrayList<String> getHashtags() {
-        return null;  // ToDo IMPLEMENT ME!!!
+        return this.hashtags;
+    }
+
+    public void setHashtags(ArrayList<String> hashtags) {
+        this.hashtags = hashtags;
     }
 }

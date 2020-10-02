@@ -1,4 +1,5 @@
 import java.awt.*;
+import java.util.Objects;
 
 public class Usuario {
 
@@ -36,5 +37,18 @@ public class Usuario {
 
     public NivelUsuario getNivel() {
         return nivel;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) return true;
+        if (!(object instanceof Usuario)) return false;
+        Usuario usuario = (Usuario) object;
+        return this.email == usuario.getEmail();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(email);
     }
 }

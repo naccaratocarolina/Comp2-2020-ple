@@ -1,4 +1,5 @@
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.awt.*;
@@ -46,6 +47,7 @@ public class TuiterLiteTest {
     }
 
     @Test
+    @Ignore
     public void testeTamanhoTuite() {
         assertNotNull(tuiterLite.tuitarAlgo(usuario, "Teste curto"));
 
@@ -67,6 +69,7 @@ public class TuiterLiteTest {
 
     @Test
     @SuppressWarnings("unchecked")
+    @Ignore
     public void testeAnexo() {
 
         Tuite tuite = tuiterLite.tuitarAlgo(usuario, "Testando");
@@ -84,6 +87,7 @@ public class TuiterLiteTest {
     }
 
     @Test
+    @Ignore
     public void testeApenasUmTipoPermitidoComoAnexo() {
 
         // vamos criar um outro TuiterLite aqui, especificando que ele deverá se relacionar com o tipo Image
@@ -129,6 +133,7 @@ public class TuiterLiteTest {
     }
 
     @Test
+    @Ignore
     public void testeTipoUsuario() {
         // sanity check
         assertEquals("Um usuário sem nenhum tuite deve estar no nível INICIANTE",
@@ -166,6 +171,7 @@ public class TuiterLiteTest {
     /////
     /////   ATENÇÃO: Este teste deve rodar rapidamente (poucos segundos)
     /////
+    @Ignore
     @Test
     public void testePerformanceContabilizacaoDasHashtags() {
 
@@ -181,6 +187,7 @@ public class TuiterLiteTest {
     /////   ATENÇÃO: Este teste deve rodar rapidamente (poucos segundos)
     /////
     @Test
+    @Ignore
     public void testePerformanceTuites() {
         // vamos cadastrar um número grande de usuários
         for (int i = 1; i <= 300_000; i++) {
