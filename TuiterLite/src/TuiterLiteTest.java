@@ -47,7 +47,6 @@ public class TuiterLiteTest {
     }
 
     @Test
-    @Ignore
     public void testeTamanhoTuite() {
         assertNotNull(tuiterLite.tuitarAlgo(usuario, "Teste curto"));
 
@@ -133,7 +132,6 @@ public class TuiterLiteTest {
     }
 
     @Test
-    @Ignore
     public void testeTipoUsuario() {
         // sanity check
         assertEquals("Um usuário sem nenhum tuite deve estar no nível INICIANTE",
@@ -171,7 +169,6 @@ public class TuiterLiteTest {
     /////
     /////   ATENÇÃO: Este teste deve rodar rapidamente (poucos segundos)
     /////
-    @Ignore
     @Test
     public void testePerformanceContabilizacaoDasHashtags() {
 
@@ -187,10 +184,9 @@ public class TuiterLiteTest {
     /////   ATENÇÃO: Este teste deve rodar rapidamente (poucos segundos)
     /////
     @Test
-    @Ignore
     public void testePerformanceTuites() {
         // vamos cadastrar um número grande de usuários
-        for (int i = 1; i <= 300_000; i++) {
+        for (int i = 1; i <= 50_000; i++) {
             String nome = String.format("Usuário %d", i);
             String email = String.format("usuario%d@email.com", i);
             tuiterLite.cadastrarUsuario(nome, email);
@@ -198,7 +194,7 @@ public class TuiterLiteTest {
 
         // agora vamos tentar fazer um número grande de tuítes com usuário desconhecido
         Usuario usuarioNaoCadastrado = new Usuario("Usuário Desconhedido", "unknown@void.com");
-        for (int i = 1; i <= 300_000; i++) {
+        for (int i = 1; i <= 50_000; i++) {
             assertNull(tuiterLite.tuitarAlgo(usuarioNaoCadastrado, "Teste"));
         }
     }
