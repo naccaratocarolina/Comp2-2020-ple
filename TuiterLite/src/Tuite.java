@@ -58,7 +58,7 @@ public class Tuite<T> {
      * @return anexo do tuite
      */
     public Object getAnexo() {
-        return null;  // ToDo IMPLEMENT ME!!!
+        return this.anexo;
     }
 
     /**

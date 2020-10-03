@@ -5,7 +5,10 @@ import java.util.regex.Pattern;
 
 public class Usuario {
 
+    //Numero minimo de tuites para um usuario se tornar senior
     public static final int MIN_TUITES_SENIOR = 200;
+
+    //Numero minimo de tuites para um usuario se tornar ninja
     public static final int MIN_TUITES_NINJA = 1000;
 
     //Email do Usuario
@@ -46,7 +49,7 @@ public class Usuario {
     /**
      * Getter de email.
      *
-     * @return email do usuario
+     * @return email do usuario (this)
      */
     public String getEmail() {
         return this.email;
@@ -55,7 +58,7 @@ public class Usuario {
     /**
      * Getter de nome.
      *
-     * @return
+     * @return nome do usuario (this)
      */
     public String getNome() {
         return this.nome;
@@ -158,7 +161,7 @@ public class Usuario {
         if (this == object) return true;
         if (!(object instanceof Usuario)) return false;
         Usuario usuario = (Usuario) object;
-        return this.email == usuario.getEmail();
+        return this.email.equals(usuario.getEmail());
     }
 
     /**

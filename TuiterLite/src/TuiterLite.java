@@ -13,6 +13,7 @@ import java.util.regex.Pattern;
  */
 public class TuiterLite<T> {
 
+    //Maximo de caracteres por tuite
     public static final int TAMANHO_MAXIMO_TUITES = 120;
 
     //Array que ira armazenar todas as hashtags ja utilizadas na plataforma
@@ -22,7 +23,7 @@ public class TuiterLite<T> {
     //Portanto, eh um HashMap com hashtag=frequencia
     public final Map<String, Integer> frequenciaDeHashtag;
 
-    //Map que armazena os usuarios cadastrados na plataforma e seus respectivos emails
+    //Map que armazena os usuarios cadastrados (key) na plataforma e seus respectivos emails (value)
     private final Map<Usuario, String> usuariosCadastrados;
 
     /**
@@ -35,6 +36,7 @@ public class TuiterLite<T> {
         //Inicializa o HashMap com a frequencia de cada hashtag
         this.frequenciaDeHashtag = new HashMap<String, Integer>();
 
+        //Inicializa o HashMap com o usuario cadastrado e o seu email
         this.usuariosCadastrados = new HashMap<Usuario, String>();
     }
 
@@ -59,7 +61,7 @@ public class TuiterLite<T> {
     /**
      * Getter de usuariosCadastrados.
      *
-     * @return todos os usuarios cadastrados na plataforma
+     * @return todos os usuarios cadastrados na plataforma e seus emails
      */
     public Map<Usuario, String> getUsuariosCadastrados() {
         return usuariosCadastrados;

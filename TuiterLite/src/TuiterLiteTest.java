@@ -67,8 +67,6 @@ public class TuiterLiteTest {
     }
 
     @Test
-    @SuppressWarnings("unchecked")
-    @Ignore
     public void testeAnexo() {
 
         Tuite tuite = tuiterLite.tuitarAlgo(usuario, "Testando");
@@ -86,7 +84,6 @@ public class TuiterLiteTest {
     }
 
     @Test
-    @Ignore
     public void testeApenasUmTipoPermitidoComoAnexo() {
 
         // vamos criar um outro TuiterLite aqui, especificando que ele deverá se relacionar com o tipo Image
@@ -193,7 +190,7 @@ public class TuiterLiteTest {
         }
 
         // agora vamos tentar fazer um número grande de tuítes com usuário desconhecido
-        Usuario usuarioNaoCadastrado = new Usuario("Usuário Desconhedido", "unknown@void.com");
+        Usuario usuarioNaoCadastrado = new Usuario("Usuário Desconhecido", "unknown@void.com");
         for (int i = 1; i <= 10_000; i++) {
             assertNull(tuiterLite.tuitarAlgo(usuarioNaoCadastrado, "Teste"));
         }
