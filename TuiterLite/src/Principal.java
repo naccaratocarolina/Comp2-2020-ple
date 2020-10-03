@@ -6,11 +6,12 @@ public class Principal {
 
         tuiterLite.getHashtagsDoTuiter();
 
-        tuiterLite.tuitarAlgo(usuario, "#blabla asdasdas #outra!");
-        tuiterLite.tuitarAlgo(usuario, "#blabla");
-        System.out.println(tuiterLite.tuitarAlgo(usuario, "#outra #outra #outra"));
-        Tuite tuite = new Tuite(usuario, "#blabla asdasdas #outra! #blabla");
-        //System.out.println(tuiterLite.getHashtagMaisComum());
-        System.out.println(usuario.getNumeroDeTuitesPostados());
+        //System.out.println(tuiterLite.registraHashtags(usuario, "#blabla asdasdas #outra! #blabla #blabla"));
+        System.out.println(tuiterLite.tuitarAlgo(usuario, "#blabla asdasdas #outra! #blabla #blabla"));
+        //System.out.println(tuiterLite.tuitarAlgo(usuario, "#outra #outra #outra"));
+        //Tuite tuite = new Tuite(usuario, "#blabla asdasdas #outra! #blabla #blabla");
+        System.out.println(tuiterLite.getHashtagMaisComum());
+        System.out.println(tuiterLite.frequenciaDeHashtag);
+        //System.out.println(usuario.getNumeroDeTuitesPostados());*/
     }
 }
