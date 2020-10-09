@@ -76,7 +76,6 @@ public class TuiterLite<T> {
      * @return O Usuario criado.
      */
     public Usuario cadastrarUsuario(String nome, String email) {
-        if(this.usuariosCadastrados.containsValue(email)) return null;
         Usuario novoUsuario = new Usuario(nome, email);
         this.usuariosCadastrados.put(novoUsuario, email);
         return novoUsuario;
