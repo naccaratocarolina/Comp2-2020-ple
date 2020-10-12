@@ -180,6 +180,7 @@ public class TuiterLite<T> {
                     int posicao = this.hashtags.indexOf(hashtagDoTuiter);
                     int contadorDaHashtag = this.contadorDeHashtags.get(posicao);
                     this.contadorDeHashtags.set(posicao, ++contadorDaHashtag);
+                    break;
                 }
             }
         }
