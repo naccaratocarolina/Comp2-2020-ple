@@ -1,6 +1,5 @@
 import Excecoes.ArquivoCorrompidoException;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Scanner;
 
@@ -15,9 +14,6 @@ public class Principal {
         String caminhoDoArquivo = scanner.nextLine();
 
         //Calcula a media
-        float media = lendoDeArquivo.calculaMedia(caminhoDoArquivo);
-
-        //Formata a resposta para o usuario
-        System.out.println(media);
+        lendoDeArquivo.calculaMedia(caminhoDoArquivo);
     }
 }

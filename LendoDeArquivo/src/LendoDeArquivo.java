@@ -1,80 +1,123 @@
 import java.io.*;
-import java.util.Scanner;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.*;
+import java.util.*;
 
 import Excecoes.*;
 
+
 public class LendoDeArquivo {
-    //Nome ou caminho do arquivo que se deseja trabalhar
-    String caminhoDoArquivo;
+    //Variavel que armazena todas as linhas do arquivo (inclusive linhas invalidas)
+    private final ArrayList<String> linhasDoArquivo;
 
-    //Variavel que armazena a quantidade de linhas validas de dado arquivo
-    int quantidadeLinhasValidas;
+    //Variavel que armazena somente as linhas validas no formato DRE (key) = nota (value)
+    private final Map<String, Float> linhasValidas;
 
-    //Variavel que armazena a quantidade de linhas invalidas de dado arquivo
-    int quantidadeLinhasInvalidas;
+    //Variavel que armazena a quantidade de linhas invalidas de um arquivo
+    private int quantLinhasInvalidas;
 
-    /**
-     * Getter de caminhoDoArquivo.
-     *
-     * @return caminhoDoArquivo string com o caminho e nome do arquivo
-     */
-    public String getCaminhoDoArquivo() {
-        return caminhoDoArquivo;
+    //Variavel do tipo ResultadosTurma associado ao arquivo que esta sendo lido
+    private final ResultadosTurma resultadosTurma;
+
+    public LendoDeArquivo() {
+        this.linhasDoArquivo = new ArrayList<String>();
+        this.linhasValidas = new HashMap<String, Float>();
+        this.resultadosTurma = new ResultadosTurma(this);
     }
 
     /**
-     * Setter de caminhoDoArquivo.
+     * Getter de linhasDoArquivo.
      *
-     * @param caminhoDoArquivo string com o caminho e nome do arquivo
+     * @return armazena todas as linhas do arquivo (inclusive linhas invalidas)
      */
-    public void setCaminhoDoArquivo(String caminhoDoArquivo) {
-        this.caminhoDoArquivo = caminhoDoArquivo;
+    public ArrayList<String> getLinhasDoArquivo() {
+        return linhasDoArquivo;
     }
 
     /**
-     * Getter de quantidadeLinhasValidas.
+     * Getter de linhasValidas.
      *
-     * @return quantidadeLinhasValidas variavel que conta a quantidade de linhas validas de um dado arquivo
+     * @return armazena somente as linhas validas no formato DRE (key) = nota (value)
      */
-    public int getQuantidadeLinhasValidas() {
-        return quantidadeLinhasValidas;
+    public Map<String, Float> getLinhasValidas() {
+        return linhasValidas;
     }
 
     /**
-     * Setter de quantidadeLinhasValidas.
+     * Getter de resultadosTurma.
      *
-     * @param quantidadeLinhasValidas variavel que conta a quantidade de linhas validas de um dado arquivo
+     * @return ResultadosTurma associado ao arquivo que esta sendo lido
      */
-    public void setQuantidadeLinhasValidas(int quantidadeLinhasValidas) {
-        this.quantidadeLinhasValidas = quantidadeLinhasValidas;
+    public ResultadosTurma getResultadosTurma() {
+        return resultadosTurma;
     }
 
     /**
-     * Getter quantidadeLinhasInvalidas.
+     * Funcao auxiliar que recebe o nome de um arquivo e salva todas as linhas do mesmo em uma variavel.
+     * Utiliza o medoto readAllLines da classe Files para acessar essa informacao.
      *
-     * @return quantidadeLinhasInvalidas variavel que conta a quantidade de linhas invalidas de um dado arquivo
+     * @param nomeDoArquivo caminho do arquivo que se deseja abrir
+     * @throws IOException classe geral de exceções produzidas por operações de I / O com falha ou
+     * interrompidasclasse geral de exceções produzidas por operações de I / O com falha ou interrompidas
      */
-    public int getQuantidadeLinhasInvalidas() {
-        return quantidadeLinhasInvalidas;
+    private void armazenaLinhasArquivo(String nomeDoArquivo) throws IOException {
+        Path caminhoDoArquivo = Paths.get(nomeDoArquivo);
+        List <String> linhasDoArquivo = Files.readAllLines(caminhoDoArquivo, StandardCharsets.UTF_8);
+        this.linhasDoArquivo.addAll(linhasDoArquivo);
     }
 
     /**
-     * Setter de quantidadeLinhasInvalidas.
-     *
-     * @param quantidadeLinhasInvalidas variavel que conta a quantidade de linhas invalidas de um dado arquivo
+     * Funcao auxiliar que verifica se o arquivo dado esta no formato que esperamos, que eh:
+     * DRE do aluno (String com 9 digitos) + espaço + nota do aluno (float).
+     * Todas as linhas desse arquivo que nao estiverem nesse formato especifico serao descartadas.
+     * Essa verificacao foi feita atraves de excecoes. As linhas que estiverem no formato correto
+     * sao adicionadas no array de linhas validas. Sempre que uma linha invalida eh identificada,
+     * cai no catch que, por sua vez, incrementa a variavel quantLinhasInvalidas para fazer a
+     * verificacao do arquivo corrompido posteriormente.
      */
-    public void setQuantidadeLinhasInvalidas(int quantidadeLinhasInvalidas) {
-        this.quantidadeLinhasInvalidas = quantidadeLinhasInvalidas;
+    private void verificaFormatoArquivo() {
+        for(String linhaDoArquivo : this.linhasDoArquivo) {
+            try {
+                String[] informacoesArquivo = linhaDoArquivo.split(" ");
+                String DRE = informacoesArquivo[0];
+                if(!(DRE.length() == 9)) throw new DreComFormatoIncorreto();
+                float nota = Float.parseFloat(informacoesArquivo[1]);
+                this.linhasValidas.put(DRE, nota);
+            } catch (NumberFormatException | IndexOutOfBoundsException | DreComFormatoIncorreto e) {
+                this.quantLinhasInvalidas++;
+            }
+        }
+    }
+
+    /**
+     * Funcao auxiliar que verifica se um dado arquivo eh corrompido.
+     * Um arquivo eh considerado corrompido se a quantidade de linhas invalidas for maior
+     * que a quantidade de linhas validas. Se isso for verdade, lanca a excecao correspondente.
+     *
+     * @throws ArquivoCorrompidoException excecao lancada quando o arquivo esta corrompido
+     */
+    private void verificaSeArquivoEhCorrompido() throws ArquivoCorrompidoException {
+        int quantidadeLinhasValidas = this.linhasDoArquivo.size() - this.quantLinhasInvalidas;
+        if(this.quantLinhasInvalidas > quantidadeLinhasValidas) throw new ArquivoCorrompidoException();
     }
 
     /**
      * Funcao auxiliar que abre o arquivo e faz tratamento de erro.
+     * Para fazer o tratamento de erro, ou seja, garantir que o arquivo dado esta no formato correto
+     * e nao esta corrompido, chama as funcoes verificaFormatoArquivo e verificaSeArquivoEhCorrompido.
+     * Isto feito, segue o procedimento normal para abrir um arquivo, e lanca a excecao FileNotFoundException
+     * se o mesmo nao for encontrado.
      *
      * @param caminhoDoArquivo string com o caminho e nome do arquivo
-     * @return arquivo arquivo recem aberto
      * @throws FileNotFoundException excecao que trata de erros ao abrir o arquivo
+     * @throws ArquivoCorrompidoException excecao lancada quando a quantidade de linhas
+     * invalidas de um arquivo eh maior do que a quantidade de linhas validas
      */
-    private File abreArquivo(String caminhoDoArquivo) throws FileNotFoundException {
+    private void abreArquivo(String caminhoDoArquivo) throws IOException, ArquivoCorrompidoException {
+        this.armazenaLinhasArquivo(caminhoDoArquivo);
+        this.verificaFormatoArquivo();
+        this.verificaSeArquivoEhCorrompido();
+
         File arquivo = new File(caminhoDoArquivo);
         Scanner scanner = null;
 
@@ -83,50 +126,23 @@ public class LendoDeArquivo {
         } catch (FileNotFoundException e) {
             System.out.println("O arquivo que voce digitou não existe!\nPor favor, tente de novo!\n");
         }
-
-        return arquivo;
     }
 
     /**
-     * Funcao que calcula a media aritmetica das medias contidas em um dado arquivo.
-     * Essa funcao utiliza os modulos do Java BufferedReader e FileReader para iterar
-     * pelas linhas do arquivo. Esses modulos utilizam como referencia o "\n" no final
-     * de cada linha para definir as mesmas. A cada linha, a funcao tenta converter a
-     * string contida na mesma para um float. Se o que estiver contido nessa linha nao
-     * for um float, a funcao lanca uma excecao de NumberFormatException. Isto feito,
-     * verifica se a quantidade de linhas validas eh superior a quantidade de linhas
-     * invalidas. Se essa condicao nao for atendida, lanca a excecao ArquivoCorrompidoException.
+     * Funcao que calcula a media da turma, dado o caminho de um arquivo. Esta funcao apenas abre
+     * o arquivo digitado pelo usuario e acessa o objeto resultadosTurma correspondente ao arquivo
+     * dado. Em seguida, printa os resultados da turma para o usuario.
      *
-     * @param caminhoDoArquivo string que armazena o nome do arquivo
-     * @return media das notas listadas em um arquivo
-     * @throws IOException classe geral de exceções produzidas por operações de I / O com falha ou interrompidas
-     * @throws NumberFormatException quando existe uma tentativa de converter uma string para um tipo numerico, mas a mesma nao tem o formato apropriado
-     * @throws ArquivoCorrompidoException excecao lancada quando a quantidade de linhas invalidas de um arquivo eh maior do que a quantidade de linhas validas
+     * @param caminhoDoArquivo caminho do arquivo com as notas
+     * @return resultados da turma, calculado atraves do arquivo dado
+     * @throws IOException classe geral de exceções produzidas por operações de I / O com falha ou
+     * interrompidasclasse geral de exceções produzidas por operações de I / O com falha ou interrompidas
+     * @throws ArquivoCorrompidoException excecao lancada quando a quantidade de linhas
+     * invalidas de um arquivo eh maior do que a quantidade de linhas validas
      */
-    public float calculaMedia(String caminhoDoArquivo)
-            throws IOException, NumberFormatException, ArquivoCorrompidoException {
-        File arquivo = this.abreArquivo(caminhoDoArquivo);
-        float somaDasNotas = 0;
-        int quantidadeDeLinhasDoArquivo = 0;
-
-        //Itera pelas linhas do arquivo
-        BufferedReader iteradorLinhasArquivo = new BufferedReader(new FileReader(arquivo));
-        String linhaDoArquivo;
-        while ((linhaDoArquivo = iteradorLinhasArquivo.readLine()) != null) {
-            try {
-                quantidadeDeLinhasDoArquivo++;
-                somaDasNotas += Float.parseFloat(linhaDoArquivo);
-            } catch (NumberFormatException e) {
-                this.quantidadeLinhasInvalidas++;
-            }
-        }
-
-        //Verifica se a quantidade de linhas validas eh maior que a quantidade de linhas invalidas
-        //Caso contrario, lanca a excecao ArquivoCorrompidoException
-        this.quantidadeLinhasValidas = quantidadeDeLinhasDoArquivo - this.quantidadeLinhasInvalidas;
-        if(this.quantidadeLinhasInvalidas > this.quantidadeLinhasValidas) throw new ArquivoCorrompidoException();
-
-        //Retorna a media aritmetica das notas contidas no arquivo dado
-        return somaDasNotas/this.quantidadeLinhasValidas;
+    public ResultadosTurma calculaMedia(String caminhoDoArquivo) throws IOException, ArquivoCorrompidoException {
+        this.abreArquivo(caminhoDoArquivo);
+        System.out.println(this.resultadosTurma.geraResultadosDaTurma().toString());
+        return this.resultadosTurma.geraResultadosDaTurma();
     }
 }
