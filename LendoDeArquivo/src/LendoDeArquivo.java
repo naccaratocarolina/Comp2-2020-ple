@@ -5,7 +5,6 @@ import java.util.*;
 
 import Excecoes.*;
 
-
 public class LendoDeArquivo {
     //Variavel que armazena todas as linhas do arquivo (inclusive linhas invalidas)
     private final ArrayList<String> linhasDoArquivo;
@@ -81,6 +80,7 @@ public class LendoDeArquivo {
                 String[] informacoesArquivo = linhaDoArquivo.split(" ");
                 String DRE = informacoesArquivo[0];
                 if(!(DRE.length() == 9)) throw new DreComFormatoIncorreto();
+                Long.parseLong(DRE);
                 float nota = Float.parseFloat(informacoesArquivo[1]);
                 this.linhasValidas.put(DRE, nota);
             } catch (NumberFormatException | IndexOutOfBoundsException | DreComFormatoIncorreto e) {

@@ -6,9 +6,9 @@ public class ResultadosTurma {
     public static final float NOTA_PARA_SER_APROVADO = 7;
 
     //Arquivo com as notas dos alunos de determinada turma
-    private LendoDeArquivo arquivoDeNotasDaTurma;
+    private final LendoDeArquivo arquivoDeNotasDaTurma;
     //Informacoes retiradas deste arquivo
-    private Map<String, Float> informacoesDoArquivo;
+    private final Map<String, Float> informacoesDoArquivo;
 
     //Array de alunos de determinada turma
     private final ArrayList<Aluno> alunosDaTurma;
